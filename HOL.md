@@ -26,7 +26,7 @@ This pattern is a particular implementation of Inversion of Control, where the c
 
 DI requires a framework component behind to deal with class constructor.
 
- ![Overview - Dependency Injection diagram](./images/Overview_–_Dependency_Injection_diagram.png?raw=true "Overview - Dependency Injection diagram")
+ ![Overview - Dependency Injection diagram](./images/Overview_Dependency_Injection_diagram.png?raw=true "Overview - Dependency Injection diagram")
  
 _Overview - Dependency Injection diagram_
 
@@ -933,7 +933,7 @@ In this task, you will run the application and test that the custom action filte
  
 	_Application Trace Log_
 
- 	![Application Trace - Request Details](./images/Application_Trace_–_Request_Details.png?raw=true "Application Trace - Request Details")
+ 	![Application Trace - Request Details](./images/Application_Trace_Request_Details.png?raw=true "Application Trace - Request Details")
  
 	_Application Trace - Request Details_
 
