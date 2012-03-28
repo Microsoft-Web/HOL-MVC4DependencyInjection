@@ -82,10 +82,6 @@ Estimated time to complete this lab: **30 minutes**.
 
 > **Note:** Each exercise is accompanied by an **End** folder containing the resulting solution you should obtain after completing the exercises. You can use this solution as a guide if you need additional help working through the exercises.
 
- 
-### Next Step ###
-
-Click here to enter text.
 ### Exercise 1: Injecting a Controller ###
 
 In this exercise, you will learn how to use Dependency Injection in MVC Controllers, by integrating Unity Application Block. For that reason you will include services into your MVC Music Store controllers to separate the logic from the data access. The service will create a new dependence into the controller constructor that will be resolved using Dependency Injection with the help of **Unity** application block.
@@ -397,10 +393,6 @@ In this task, you will run the application to verify that the Store can now be l
 
 In the following exercises you will learn how to extend the Dependency Injection scope, and use it inside MVC Views and Action Filters.
 
- 
-### Next Step ###
-
-Click here to enter text.
 ### Exercise 2: Injecting a View ###
 
 In this exercise, you will learn how to apply Dependency Injection into a View by using new MVC 4 Features for Unity Integration. In order to do that, you will call a custom service inside the Store Browse View that shows a message with an image below. The service will introduce a new dependency inside the view as it has to be initialized in a point.
@@ -697,10 +689,6 @@ In this task, you will run the application to verify that the Store Browser cons
 
 1. Close the browser.
 
- 
-### Next Step ###
-
-Click here to enter text.
 ### Exercise 3: Injecting Action Filters ###
 
 In a previous Lab about Custom Action Filters you have been working with filters customization and injection. In this exercise,you will learn how to inject filters with Dependency Injection by using Unity Application Block containers. To do that, you will add to the Music Store Solution a custom action filter that will trace site activity.
@@ -938,13 +926,6 @@ In this task, you will run the application and test that the custom action filte
 	_Application Trace - Request Details_
 
 1. Close the browser.
-
- 
-### Next Step ###
-
-Summary
- 
-
 
 ## Summary ##
 
