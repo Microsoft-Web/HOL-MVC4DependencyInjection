@@ -1,0 +1,23 @@
+﻿@inherits MvcMusicStore.Pages.MyBasePage
+
+@{
+    ViewBag.Title = "Browse Albums";
+}
+
+<h2>Browse</h2>
+
+    <h2>Browsing Genre: @Model.Genre.Name</h2>
+
+    <div>
+        @this.MessageService.Message
+        <br />
+        <img alt="@this.MessageService.Message" src="@this.MessageService.ImageUrl" />
+    </div>
+
+    <ul>
+
+    @foreach (var album in Model.Albums)
+    { 
+       <li>@album.Title</li>
+    }
+    </ul>

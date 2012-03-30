@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Action Log</h2>
+
+    <table>
+        <tr>
+            <th>
+                Action Log Id
+            </th>
+            <th>
+                Controller
+            </th>
+            <th>
+                Action
+            </th>
+            <th>
+                IP
+            </th>
+            <th>
+                Date/Time
+            </th>
+        </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.ActionLogId
+            </td>
+            <td>
+                @item.Controller
+            </td>
+            <td>
+                @item.Action
+            </td>
+            <td>
+                @item.IP
+            </td>
+            <td>
+                @String.Format("{0:g}", item.DateTime)
+            </td>
+        </tr>    
+    }
+
+    </table>
