@@ -820,7 +820,7 @@ In this task, you will include in the Music Store a custom action filter for eve
 	
 	namespace MvcMusicStore.Filters
 	{
-	    public class FilterProvider : **IFilterProvider**
+	    public class FilterProvider : IFilterProvider
 	    {
 	    }
 	}
