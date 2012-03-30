@@ -64,7 +64,7 @@ You must have the following items to complete this lab:
 
 - Visual Studio 11 Express Beta for Web
 
-	**Note:** NEEDS UPDATE You can install the previous system requirements by using the Web Platform Installer 3.0: [http://go.microsoft.com/fwlink/?LinkID=194638](http://go.microsoft.com/fwlink/?LinkID=194638).
+	**Note:** You can install **Visual Studio 11 Express Beta for Web**. To do this, navigate to [http://www.microsoft.com/web/gallery/install.aspx?appid=VWD11_BETA&prerelease=true](http://www.microsoft.com/web/gallery/install.aspx?appid=VWD11_BETA&prerelease=true) using a web browser. 
 
  
 ## Exercises ##
@@ -421,44 +421,43 @@ In this task, you will create a view that performs a service call to generate a 
 	
 	namespace MvcMusicStore.Pages
 	{
-	    public class MyBasePage : System.Web.Mvc.ViewPage<MvcMusicStore.ViewModels.StoreBrowseViewModel>
+	    public class MyBasePage : System.Web.Mvc.WebViewPage<MvcMusicStore.ViewModels.StoreBrowseViewModel>
 	    {
-	        [Dependency]
-	        public IMessageService MessageService { get; set; }
+			 [Dependency]
+			 public IMessageService MessageService { get; set; }
+			  
+			 public override void Execute()
+			 {
+			 }
 	    }
 	}
 	````
 
-	> **Note:** On behalf of a technical reason coming from the **ASP.NET** engine, the **dependency** at **IMessageService** interface can't be included into the respective **View Model** Class.
+> **Note:** On behalf of a technical reason coming from the **ASP.NET** engine, the **dependency** at **IMessageService** interface can't be included into the respective **View Model** Class.
 
-	> The class **MyBasePage** intercepts the relationship between the View and the View-Model so the dependency injection at MessageService can now be inherited by the View.
+> The class **MyBasePage** intercepts the relationship between the View and the View-Model so the dependency injection at MessageService can now be inherited by the View.
 
-1. Open **Browse.aspx** view from **/Views/Store** project folder, and make it inherit from **MyBasePage.cs**:
+1. Open **Browse.cshtml** view from **/Views/Store** project folder, and make it inherit from **MyBasePage.cs**:
 
 	````C#
-	<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" **Inherits="MvcMusicStore.Pages.MyBasePage"** %>
-	````
-
-	````VisualBasic
-	<%@ Page Title="" Language="vb" MasterPageFile="~/Views/Shared/Site.Master" **Inherits="MvcMusicStore.MyBasePage" %>**
+	@inherits MvcMusicStore.Pages.MyBasePage
 	````
 
 1. Include in **Browse** view a call to **MessageService,** that will display an image and a message retrieved by the service:
 
 	````HTML(C#)
-	<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="MvcMusicStore.Pages.MyBasePage" %>
+	@inherits MvcMusicStore.Pages.MyBasePage
 	
-	<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	    Browse Albums
-	</asp:Content>
-	
-	<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-	
+	@{
+		Viewbag.Title = "Browse Albums";
+	}
+
 	<div>
-	<%= this.MessageService.Message %>
-	<br />
-	<img alt="<%: this.MessageService.Message %>"src="<%: this.MessageService.ImageUrl %>" />
+		@this.MessageService.Message
+		<br />
+		<img alt="@this.MessageService.Message" src="@this.MessageService.ImageUrl" />
 	</div>
+
 	...
 	````
 
@@ -466,27 +465,24 @@ In this task, you will create a view that performs a service call to generate a 
 
 In the previous task, you injected a new dependency inside a view to perform a service call inside it. Now, you will start solving that dependence by implementing the new MVC 4 Dependency Injection Interfaces **IViewPageActivator** and **IDependencyResolver**.You will include in the solution an implementation of **IDependencyResolver** that will deal with service retrieval by using Unity. Then you will include another custom implementation of **IViewPageActivator** interface that will solve the creation of Views.
 
-> **Note: MVC 4** implementation for Dependency Injection had simplified the interfaces for service registration. **IDependencyResolver** and **IViewPageActivator** are a part of the new MVC4 features for Dependency Injection.**- IDependencyResolver** interface replaces the previous IMvcServiceLocator. Implementers of IDependencyResolver must return an instance of the service or a service collection.
+> **Note: MVC 4** implementation for Dependency Injection had simplified the interfaces for service registration. **IDependencyResolver** and **IViewPageActivator** are a part of the new MVC4 features for Dependency Injection.
 
-> **C#**
+>**- IDependencyResolver** interface replaces the previous IMvcServiceLocator. Implementers of IDependencyResolver must return an instance of the service or a service collection.
 
-> **public interface IDependencyResolver {**
-
-> **object GetService(Type serviceType);**
-
-> **IEnumerable<object> GetServices(Type serviceType);**
-
-> **}**
+>````C#
+	public interface IDependencyResolver {
+		object GetService(Type serviceType);
+		IEnumerable<object> GetServices(Type serviceType);
+	}
+````
 
 > **- IViewPageActivator** interface provides more fine-grained control over how view pages are instantiated via dependency injection. The classes that implement **IViewPageActivator** interface must create the instance of a view having context information.
 
-> **C#**
-
-> **public interface IViewPageActivator {**
-
-> **object Create(ControllerContext controllerContext, Type type);**
-
-> **}**
+>````C#
+	public interface IViewPageActivator {
+		object Create(ControllerContext controllerContext, Type type);
+	}
+````
 
 1. Copy the class **CustomViewPageActivator.cs** from **/Sources/Assets** to the**Factories** folder. This class implements the **IViewPageActivator** interface to hold the Unity Container.
 
@@ -616,7 +612,7 @@ To inject Browse View, you will now register the custom dependency resolver into
 	
 	    container.RegisterInstance<IMessageService>(new MessageService { 
 	        Message = "You are welcome to our Web Camps Training Kit!",
-	        ImageUrl = "/Content/Images/logo-webcamps.png"    
+	        ImageUrl = "/Content/Images/webcamps.png"    
 	    });
 	    
 	}
@@ -632,7 +628,7 @@ To inject Browse View, you will now register the custom dependency resolver into
 	...
 	    container.RegisterInstance<IMessageService>(new MessageService { 
 	        Message = "You are welcome to our Web Camps Training Kit!",
-	        ImageUrl = "/Content/Images/logo-webcamps.png"    
+	        ImageUrl = "/Content/Images/webcamps.png"    
 	    });
 	    container.RegisterType<IViewPageActivator, CustomViewPageActivator>(new InjectionConstructor(container));
 	
@@ -660,7 +656,7 @@ To inject Browse View, you will now register the custom dependency resolver into
 	
 	    container.RegisterInstance<IMessageService>(new MessageService { 
 	        Message = "You are welcome to our Web Camps Training Kit!",
-	        ImageUrl = "/Content/Images/logo-webcamps.png"    
+	        ImageUrl = "/Content/Images/webcamps.png"    
 	    });
 	    container.RegisterType<IViewPageActivator, CustomViewPageActivator>(new InjectionConstructor(container));
 	
@@ -890,7 +886,7 @@ Make the class inherit from **IFilterProvider** Interface.
 	
 	    container.RegisterInstance<IMessageService>(new MessageService { 
 	        Message = "You are welcome to our Web Camps Training Kit!",
-	        ImageUrl = "/Content/Images/logo-webcamps.png"    
+	        ImageUrl = "/Content/Images/webcamps.png"    
 	    });
 	    container.RegisterType<IViewPageActivator, CustomViewPageActivator>(new InjectionConstructor(container));
 	
