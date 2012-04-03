@@ -6,10 +6,10 @@
 
 Hands-On Labs are sets of step-by-step guides that are designed to help you learn ASP.NET MVC 4.  Each Lab provides instructions to guide you through the process of developing a complete application.
 
-In Object Oriented Programming paradigm, objects work together in a collaboration model where there are contributors and consumers. Naturally, this communication model generates dependencies between objects and components that could became difficult to manage when complexity increases .
+In Object Oriented Programming paradigm, objects work together in a collaboration model where there are contributors and consumers. Naturally, this communication model generates dependencies between objects and components that could became difficult to manage when complexity increases.
 You have probably heard about Factory Pattern and the separation between the interface and the implementation using services. However, the client objects are often responsible for service location.
 Before introducing the Dependency Injection Pattern, we will explain what Inversion of Control (IoC) principle is. 
-With Inversion of Control (Ioc), consumer objects do not create the other objects on which they rely. Those objects come from an external source.
+With Inversion of Control (IoC), consumer objects do not create the other objects on which they rely. Those objects come from an external source.
 
 ### Repository Structure ###
 
