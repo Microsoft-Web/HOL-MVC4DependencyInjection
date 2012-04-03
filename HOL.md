@@ -1008,138 +1008,30 @@ In this task, you will run the application and test that the custom action filte
 <a name="Exercise4" />
 ### Exercise 4: Injecting a Controller using MEF 2.0 ###
 
-In this exercise, you will learn how to use Dependency Injection in MVC Controllers, by integrating MEF 2.0. For that reason you will include services into your MVC Music Store controllers to separate the logic from the data access. The service will create a new dependence into the controller constructor that will be resolved using Dependency Injection with the help of MEF 2.0.
-
-With this approach you will learn how to generate less coupled applications, which are more flexible and easier to maintain and test. Additionally, you will also learn how to integrate MVC with MEF 2.0 and you could compare MEF 2.0 and Unity.
-
-#### About StoreManager Service ####
-
-The MVC Music Store provided in the begin solution now includes a service that manages the Store Controller data, **StoreService**. Below you will find the Store Service implementation. Note that all the methods return Model entities.
-
-````C#
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MvcMusicStore.Models;
-
-namespace MvcMusicStore.Services
-{
-    public class StoreService : MvcMusicStore.Services.IStoreService
-    {
-        MusicStoreEntities storeDB = new MusicStoreEntities();
-
-        public IList<string> GetGenreNames()
-        {
-            var genres = from genre in storeDB.Genres
-                         select genre.Name;
-
-            return genres.ToList();
-        }
-
-        public Genre GetGenreByName(string name)
-        {
-            var genre = storeDB.Genres.Include("Albums")
-                    .Single(g => g.Name == name);
-            return genre;
-        }
-
-        public Album GetAlbum(int id)
-        {
-            var album = storeDB.Albums.Single(a => a.AlbumId == id);
-
-            return album;
-        }
-    }
-}
-````
-
-Additionally, in the **StoreController** you will find in the begin solution now uses **StoreService**. All data references were removed from Store Controller, and therefore it is possible to modify the current data access provider without making changes at any method that consumes the Store Service.
-
-You will find below that the **Store Controller** implementation has a dependency with the Store Service inside the class constructor.
-
-> **Note:** The dependency introduced in this exercise is related to **MVC Inversion of Control** (IoC).
->
-> The **StoreController** class constructor receives an **IStoreService** parameter, which is essential to perform service calls inside the class. However, **StoreController** does not implement the default constructor (with no parameters) that any controller must have to work with IoC.
->
-> To resolve the dependency, the controller should be created by an abstract factory (a class that returns any object of the specified type).
-
-````C#
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using MvcMusicStore.ViewModels;
-using MvcMusicStore.Models;
-using MvcMusicStore.Services;
-
-namespace MvcMusicStore.Controllers
-{
-    public class StoreController : Controller
-    {
-        private IStoreService service;
-
-        public StoreController(IStoreService service)
-        {
-            this.service = service;
-        }
-
-        //
-        // GET: /Store/
-        public ActionResult Index()
-        {
-            // Create list of genres
-            var genres = this.service.GetGenreNames();
-
-            // Create your view model
-            var viewModel = new StoreIndexViewModel
-            {
-                Genres = genres.ToList(),
-                NumberOfGenres = genres.Count()
-            };
-
-            return View(viewModel);
-        }
-
-        //
-        // GET: /Store/Browse?genre=Disco
-        public ActionResult Browse(string genre)
-        {
-            var genreModel = this.service.GetGenreByName(genre);
-
-            var viewModel = new StoreBrowseViewModel()
-            {
-                Genre = genreModel,
-                Albums = genreModel.Albums.ToList()
-            };
-
-            return View(viewModel);
-        }
-
-        //
-        // GET: /Store/Details/5
-        public ActionResult Details(int id)
-        {
-            var album = this.service.GetAlbum(id);
-
-            return View(album);
-        }
-    }
-}
-````
-
->**Note:** You will get an error when a class tries to create this Store Controller without sending the service interface, because there is not a parameterless constructor declared.
-Through this lab you will learn how to deal with this problem using Dependency Injection with Unity.
+In this exercise you will learn how to inject dependencies in a controller as you did in exercise 1; but in this case, instead of Unity Application Block, you will be using a different container like MEF 2.0. 
 
 <a name="Ex4Task1" />
 #### Task 1 - Running the Application ####
 
-In this task, you will run the Begin application, which is now including the service into the Store Controller that separates the data access from the application logic.
+In this task, you will run the Begin application, which is including the service into the Store Controller that separates the data access from the application logic.
 
 After browsing to the store you will receive an exception since the controller service is not passed as a parameter by default:
 
 1. Open the begin solution **MvcMusicStore.sln** at **Source\Ex04-Injecting Controller using MEF 2.0\Begin**.
+
+1.	Follow these steps to install the **NuGet** package dependencies.
+
+	1.	Open the **NuGet** **Package Manager Console**. To do this, select **Tools | Library Package Manager | Package Manager Console**.
+
+	1.	In the **Package Manager Console,** type **Install-Package NuGetPowerTools**.
+
+	1.	After installing the package, type **Enable-PackageRestore**.
+
+	1.	Build the solution. The **NuGet** dependencies will be downloaded and installed automatically.
+
+	>**Note:** One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.
+	
+	>For more information, see this article: <http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages>.
 
 1. Press **F5** to run the application.
 
@@ -1158,9 +1050,7 @@ In the following steps you will work on the Music Store Solution to inject the d
 
 In this task, you will install MEF 2.0 into your solution.
 
-You could read more about MEF 2.0 at [codeplex](http://mef.codeplex.com/).
-
-1. Open the begin solution **MvcMusicStore.sln** at **Source\Ex04-Injecting Controller using MEF 2.0\Begin**.
+You can read more about MEF 2.0 at [codeplex](http://mef.codeplex.com/).
 
 1. In the Package Manager Console execute the following command:
 
@@ -1203,7 +1093,7 @@ In this task, you will add the service in the controller.
 <a name="Ex4Task4" />
 #### Task 4 - Running the Application ####
 
-In this task, you will run the application to verify that the Store can now be loaded after including Unity.
+In this task, you will run the application to verify that the Store can now be loaded after including MEF.
 
 1. Press **F5** to run the application.
 
