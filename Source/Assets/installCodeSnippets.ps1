@@ -117,12 +117,12 @@ foreach ($node in $vscontent.VSContent.Content)
     
     switch (($node.Attributes.Attribute | Where-Object { $_.name -eq "lang" }).value) 
     {       
-        "XML" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 2010\Code Snippets\XML\My Xml Snippets" -force } 
-        "HTML" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 2010\Code Snippets\Visual Web Developer\My HTML Snippets" -force } 
-        "csharp" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 2010\Code Snippets\Visual C#\My Code Snippets" -force } 
-        "vb" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 2010\Code Snippets\Visual Basic\My Code Snippets" -force } 
-        "JScript" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 2010\Code Snippets\Visual Web Developer\My JScript Snippets" -force }  
-        "SQL" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 2010\Code Snippets\SQL\My Code Snippets" -force }       
+        "XML" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 11\Code Snippets\XML\My Xml Snippets" -force } 
+        "HTML" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 11\Code Snippets\Visual Web Developer\My HTML Snippets" -force } 
+        "csharp" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 11\Code Snippets\Visual C#\My Code Snippets" -force } 
+        "vb" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 11\Code Snippets\Visual Basic\My Code Snippets" -force } 
+        "JScript" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 11\Code Snippets\Visual Web Developer\My JScript Snippets" -force }  
+        "SQL" { Copy-Item "$codeSnippetFile" -destination "$documentsFolder\Visual Studio 11\Code Snippets\SQL\My Code Snippets" -force }       
         
         default { Write-Error "Unexpected code snippet language: $_" }
     }
