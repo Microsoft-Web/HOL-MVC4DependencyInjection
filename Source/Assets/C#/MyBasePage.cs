@@ -11,5 +11,9 @@ namespace MvcMusicStore.Pages
     {
         [Dependency]
         public IMessageService MessageService { get; set; }
+		
+		public override void Execute()
+		{
+		}
     }
 }

@@ -6,7 +6,7 @@ using MvcMusicStore.Models;
 
 namespace MvcMusicStore.Services
 {
-    public class StoreService: MvcMusicStore.Services.IStoreService
+    public class StoreService: IStoreService
     {
         MusicStoreEntities storeDB = new MusicStoreEntities();
 
