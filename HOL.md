@@ -416,6 +416,7 @@ In this task, you will register Unity library into **Global.asax.cs** Applicatio
 1. Register the **UnityControllerFactory** type as the factory that will be used for creating controller instances:
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex01 Injecting Controllers Global application start_)
+
 	<!-- mark:10-12 -->
 	````C#
 	...
@@ -484,7 +485,7 @@ In this task, you will create a view that performs a service call to generate a 
 
 	>**Note:** The **IMessageService** interface defines two properties that are implemented by the **MessageService** class. These properties are **Message** and **ImageUrl** and are defined to hold the message and Url of the image to be displayed.
 
-1. Create the folder **/Pages** at project root, and then add the class **MyBasePage.cs** from **Source\Assets** The base page you will inherit from has the following structure:
+1. Create the folder **/Pages** at project root, and then add the class **MyBasePage.cs** from **Source\Assets\C#** The base page you will inherit from has the following structure:
 
 	````C#
 	using System;
@@ -670,6 +671,7 @@ To inject Browse View, you will now register the custom dependency resolver into
 1. Register an instance of **MessageService** into Unity container that will initialize the service:
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex02 Injecting a View GlobalAsax Registration_)
+
 	<!-- mark:12-16 -->
 	````C#
 	protected void Application_Start()
@@ -695,6 +697,7 @@ To inject Browse View, you will now register the custom dependency resolver into
 1. Register **CustomViewPageActivator** as a view page activator into Unity container:
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex02 Injecting a View GlobalAsax Registration 2_)
+
 	<!-- mark:17-18 -->
 	````C#
 	protected void Application_Start()
@@ -722,6 +725,7 @@ To inject Browse View, you will now register the custom dependency resolver into
 1. Replace MVC 4 default dependency resolver with an instance of **UnityDependencyResolver**:
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex02 Injecting a View GlobalAsax Registration 3_)
+
 	<!-- mark:19-24 -->
 	````C#
 	protected void Application_Start()
@@ -899,6 +903,7 @@ In this task, you will include in the Music Store a custom action filter for eve
 1. Implement in **FilterProvider** class the method **GetFilters** from **IFilterProvider** interface:
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters GetFilters_)
+
 	<!-- mark:19-23 -->
 	````C#
 	using System;
@@ -967,6 +972,7 @@ In this task, you will include in the Music Store a custom action filter for eve
 1. Select **Application_Start** method and register the filter in the Unity Container. You will have to register the filter provider and the action filter as well:
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters Global asax unity registration_)
+
 	<!-- mark:5-7 -->
 	````C#
 	protected void Application_Start()
