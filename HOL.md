@@ -6,7 +6,7 @@
 <a name="Overview" />
 ## Overview ##
 
->**Note:** This Hands-on Lab assumes you have basic knowledge of **ASP.NET MVC** and **ASP.NET MVC 4 filters**. If you have not used **ASP.NET MVC 4 filters** before, we recommend you to go over **ASP.NET MVC Custom Action Filters** and **MVC 3 Global and Dynamic Action filters** Hands-on Lab.
+>**Note:** This Hands-on Lab assumes you have basic knowledge of **ASP.NET MVC** and **ASP.NET MVC 4 filters**. If you have not used **ASP.NET MVC 4 filters** before, we recommend you to go over **ASP.NET MVC Custom Action Filters** Hands-on Lab.
 
 In Object Oriented Programming paradigm, objects work together in a collaboration model where there are contributors and consumers. Naturally, this communication model generates dependencies between objects and components, becoming difficult to manage when complexity increases.
 
@@ -20,7 +20,7 @@ Before introducing the Dependency Injection Pattern, you  will learn about the I
 
 ### The Dependency Injection (DI) Design Pattern ###
 
-Dependency injection (DI) design pattern separates the component behavior from the resolution of dependencies without object intervention.
+The Dependency injection (DI) design pattern separates the component behavior from the resolution of dependencies without object intervention.
 
 This pattern is a particular implementation of Inversion of Control, where the consumer object receives the dependencies inside constructor properties or arguments.
 
@@ -43,7 +43,7 @@ The advantages of using Dependency Injection pattern and Inversion of Control ar
  
 >**Note:** Dependency Injection is sometimes compared with Abstract Factory Design Pattern, but there is a slight difference between both approaches. DI has a Framework working behind to solve dependencies by calling the factories and the registered services.
 
-Now that you understand the Dependency Injection Pattern, you will learn throughout this lab how to apply it in ASP.NET MVC 4. You will start using Dependency Injection in the **Controllers** to include a database access service. Next, you will apply Dependency Injection to the **Views** to consume a service and show information. Finally, you will extend the DI to MVC 4 Filters, injecting a **Custom Action Filter** in the solution.
+Now that you understand the Dependency Injection Pattern, you will learn throughout this lab how to apply it in ASP.NET MVC 4. You will start using Dependency Injection in the **Controllers** to include a database access service. Next, you will apply Dependency Injection to the **Views** to consume a service and show information. Finally, you will extend the DI to MVC 4 Filters, injecting a custom action filter in the solution.
 
 In this Hands-on Lab, you will learn how to:
 
@@ -375,7 +375,7 @@ In this task, you will register the Unity library into the method **Application_
 
 1. Open **Global.asax.cs**.
 
-1. Include the following namespaces **Microsoft.Practices.Unity**, **MvcMusicStore.Services**, **MvcMusicStore.Factories** and **MvcMusicStore.Controllers**:
+1. Include the following namespaces **Microsoft.Practices.Unity**, **MvcMusicStore.Services**, **MvcMusicStore.Factories** and **MvcMusicStore.Controllers**.
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex01 Injecting Controllers Global using_)
 
@@ -483,7 +483,7 @@ In this task, you will create a view that performs a service call to generate a 
 
 	>**Note:** The **IMessageService** interface defines two properties implemented by the **MessageService** class. These properties -**Message** and **ImageUrl**- store the message and the URL of the image to be displayed.
 
-1. Create the folder **/Pages** in the project's root folder, and then add the existing class **MyBasePage.cs** from **Source\Assets\C#**. The base page you will inherit from has the following structure:
+1. Create the folder **/Pages** in the project's root folder, and then add the existing class **MyBasePage.cs** from **Source\Assets\C#**. The base page you will inherit from has the following structure.
 
 	````C#
 	using System;
@@ -511,13 +511,13 @@ In this task, you will create a view that performs a service call to generate a 
 	>
 	> For that reason, **MyBasePage** intercepts the relationship between the View and the View-Model, and the dependency injection at MessageService can now be inherited by the View.
 
-1. Open **Browse.cshtml** view from **/Views/Store** project folder, and make it inherit from **MyBasePage.cs**:
+1. Open **Browse.cshtml** view from **/Views/Store** project folder, and make it inherit from **MyBasePage.cs**.
 
 	````C#
 	@inherits MvcMusicStore.Pages.MyBasePage
 	````
 
-1. Include in the **Browse** view a call to **MessageService,** that will display an image and a message retrieved by the service:
+1. In the **Browse** view, add a call to **MessageService** to display an image and a message retrieved by the service.
 
 	<!-- mark:7-12 -->
 	````HTML(C#)
@@ -775,7 +775,7 @@ In this task, you will run the application to verify that the Store Browser cons
 <a name="Exercise3" />
 ### Exercise 3: Injecting Action Filters ###
 
-In the previous Hands-On lab about Custom Action Filters you have worked with filters customization and injection. In this exercise, you will learn how to inject filters with Dependency Injection by using the Unity Application Block container. To do that, you will add to the Music Store solution a custom action filter that will trace the activity of the site.
+In the previous Hands-On lab **Custom Action Filters** you have worked with filters customization and injection. In this exercise, you will learn how to inject filters with Dependency Injection by using the Unity Application Block container. To do that, you will add to the Music Store solution a custom action filter that will trace the activity of the site.
 
 <a name="Ex3Task1" />
 #### Task 1 - Including the Tracking Filter in the Solution ####
@@ -1055,7 +1055,7 @@ In this task, you will install MEF 2.0 in your solution.
 
 You can read more about MEF 2.0 at [codeplex](http://mef.codeplex.com/).
 
-1. In the Package Manager Console execute the following command:
+1. In the Package Manager Console execute the following command.
 
 	````PMC
 	install-package Microsoft.Mef.MvcCompositionProvider -pre
@@ -1119,9 +1119,7 @@ The following concepts were covered:
 
 - MVC 4 Dependency Injection features
 
-- Unity Application Block integration
-
-- MEF 2.0
+- Unity Application Block and MEF 2.0 integration
 
 - Dependency Injection in Controllers
 

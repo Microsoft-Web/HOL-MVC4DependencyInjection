@@ -8,8 +8,8 @@ Hands-On Labs are sets of step-by-step guides that are designed to help you lear
 
 In Object Oriented Programming paradigm, objects work together in a collaboration model where there are contributors and consumers. Naturally, this communication model generates dependencies between objects and components that could became difficult to manage when complexity increases.
 You have probably heard about Factory Pattern and the separation between the interface and the implementation using services. However, the client objects are often responsible for service location.
-Before introducing the Dependency Injection Pattern, we will explain what Inversion of Control (IoC) principle is. 
-With Inversion of Control (IoC), consumer objects do not create the other objects on which they rely. Those objects come from an external source.
+
+The Dependency injection (DI) design pattern separates the component behavior from the resolution of dependencies without object intervention. This pattern is a particular implementation of Inversion of Control, where the consumer object receives the dependencies inside constructor properties or arguments.
 
 ### Repository Structure ###
 
