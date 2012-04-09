@@ -561,7 +561,7 @@ In the previous task, you injected a new dependency inside a view to perform a s
 >	}
 >````
 
-1. Copy the class **CustomViewPageActivator.cs** from **/Sources/Assets/C#** to the **Factories** folder. This class implements the **IViewPageActivator** interface to hold the Unity Container.
+1. Add the class **CustomViewPageActivator.cs** from **/Sources/Assets/C#** to the **Factories** folder. This class implements the **IViewPageActivator** interface to hold the Unity Container.
 
 	````C#
 	using System;
