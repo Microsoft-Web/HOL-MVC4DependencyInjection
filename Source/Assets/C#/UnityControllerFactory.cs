@@ -4,11 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
-using System.Web.Routing;
 
 namespace MvcMusicStore.Factories
 {
-    public class UnityControllerFactory : IControllerFactory
+    public class UnityControllerFactory: IControllerFactory
     {
         private IUnityContainer _container;
         private IControllerFactory _innerFactory;
@@ -18,13 +17,13 @@ namespace MvcMusicStore.Factories
         {
         }
 
-        protected UnityControllerFactory(IUnityContainer container, IControllerFactory innerFactory)
+        public UnityControllerFactory(IUnityContainer container, IControllerFactory innerFactory)
         {
             _container = container;
             _innerFactory = innerFactory;
         }
 
-        public IController CreateController(RequestContext requestContext, string controllerName)
+        public IController CreateController(System.Web.Routing.RequestContext requestContext, string controllerName)
         {
             try
             {
@@ -36,15 +35,14 @@ namespace MvcMusicStore.Factories
             }
         }
 
+        public System.Web.SessionState.SessionStateBehavior GetControllerSessionBehavior(System.Web.Routing.RequestContext requestContext, string controllerName)
+        {
+            return System.Web.SessionState.SessionStateBehavior.Default;
+        }
+
         public void ReleaseController(IController controller)
         {
             _container.Teardown(controller);
-        }
-
-
-        public System.Web.SessionState.SessionStateBehavior GetControllerSessionBehavior(RequestContext requestContext, string controllerName)
-        {
-            return System.Web.SessionState.SessionStateBehavior.Default;
         }
     }
 }
