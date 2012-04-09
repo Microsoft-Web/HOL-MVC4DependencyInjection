@@ -16,7 +16,7 @@ _Class dependencies and model complexity_
 
 You have probably heard about the Factory Pattern and the separation between the interface and the implementation using services. However, the client objects are often responsible for service location.
 
-Before introducing the Dependency Injection Pattern, we will explain what Inversion of Control (IoC) principle is.
+Before introducing the Dependency Injection Pattern, we will explain what the Inversion of Control (IoC) principle is.
 
 With **Inversion of Control (IoC)**, consumer objects do not create the other objects on which they rely. Those objects come from an external source.
 
@@ -137,7 +137,7 @@ Estimated time to complete this lab: **30 minutes**.
 <a name="Exercise1" />
 ### Exercise 1: Injecting a Controller ###
 
-In this exercise, you will learn how to use Dependency Injection in MVC Controllers, by integrating Unity Application Block. For that reason you will include services into your MVC Music Store controllers to separate the logic from the data access. The service will create a new dependence into the controller constructor that will be resolved using Dependency Injection with the help of **Unity** application block.
+In this exercise, you will learn how to use Dependency Injection in MVC Controllers by integrating Unity Application Block. For that reason, you will include services into your MVC Music Store controllers to separate the logic from the data access. The service will create a new dependence into the controller constructor that will be resolved using Dependency Injection with the help of **Unity** application block.
 
 With this approach you will learn how to generate less coupled applications, which are more flexible and easier to maintain and test. Additionally, you will also learn how to integrate MVC with Unity.
 
@@ -183,7 +183,7 @@ namespace MvcMusicStore.Services
 }
 ````
 
-Additionally, in the **StoreController** you will find in the begin solution now uses **StoreService**. All data references were removed from Store Controller, and therefore it is possible to modify the current data access provider without making changes at any method that consumes the Store Service.
+Additionally, in the **StoreController** that you will find in the begin solution now uses **StoreService**. All data references were removed from Store Controller, and therefore it is possible to modify the current data access provider without making changes at any method that consumes the Store Service.
 
 You will find below that the **Store Controller** implementation has a dependency with the Store Service inside the class constructor.
 
@@ -373,7 +373,7 @@ In this task, you will add to the solution a custom controller factory for **Uni
 <a name="Ex1Task4" />
 ####Task 4 - Registering Unity in Global.asax.cs Application_Start ####
 
-In this task, you will register Unity library into **Global.asax.cs** Application Start.
+In this task, you will register Unity library into the **Global.asax.cs** Application Start method.
 
 1. Open **Global.asax.cs** file.
 
@@ -767,7 +767,7 @@ In this task, you will run the application to verify that the Store Browser cons
 
 1. Browse to **/Store** and enter to any of the genres that are shown below. In this example, we enter to "**Rock**":
 
- 	![MVC Music Store - View Injection](./images/MVC_Music_Store_-_View_Injection.png?raw=true "MVC Music Store - View Injection")
+ 	![MVC Music Store - View Injection](./images/Music_Store.png?raw=true "MVC Music Store - View Injection")
  
 	_MVC Music Store - View Injection_
 
