@@ -767,7 +767,7 @@ In this task, you will run the application to verify that the Store Browser cons
 
 1. Browse to **/Store** and enter to any of the genres that are shown below. In this example, we enter to "**Rock**":
 
- 	![MVC Music Store - View Injection](./images/MVC_Music_Store_-_View_Injection.png?raw=true "MVC Music Store - View Injection")
+ 	![MVC Music Store - View Injection](./images/Music_Store.png?raw=true "MVC Music Store - View Injection")
  
 	_MVC Music Store - View Injection_
 
