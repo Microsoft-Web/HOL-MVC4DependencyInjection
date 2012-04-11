@@ -970,16 +970,20 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters Global asax unity registration_)
 
-	<!-- mark:5-7 -->
+	<!-- mark:7-9 -->
 	````C#
 	protected void Application_Start()
 	{
+		...
+
 		container.RegisterType<IViewPageActivator, CustomViewPageActivator>(new InjectionConstructor(container));
 
-	    container.RegisterInstance<IFilterProvider>("FilterProvider", new FilterProvider(container));
-	    container.RegisterInstance<IActionFilter>("LogActionFilter", new TraceActionFilter());
+		container.RegisterInstance<IFilterProvider>("FilterProvider", new FilterProvider(container));
+		container.RegisterInstance<IActionFilter>("LogActionFilter", new TraceActionFilter());
 
-        IDependencyResolver resolver = DependencyResolver.Current;
+		IDependencyResolver resolver = DependencyResolver.Current;
+
+		...
 	}
 	````
 
@@ -1076,7 +1080,7 @@ In this task, you will add the service in the controller.
 
 	<!-- mark:1 -->
 	````C#
-	namespace MvcMusicStore.Parts;
+	namespace MvcMusicStore.Parts
 	````
 
 1. In **StoreController.cs**, change **MvcMusicStore.Services** to **MvcMusicStore.Parts**.
