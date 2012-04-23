@@ -379,7 +379,6 @@ In this task, you will register the Unity library into the method **Application_
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex01 Injecting Controllers Global using_)
 
-	<!-- mark:7-11 -->
 	````C#
 	using System;
 	using System.Collections.Generic;
@@ -397,7 +396,6 @@ In this task, you will register the Unity library into the method **Application_
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex01 Injecting Controllers Unity Container_)
 
-	<!-- mark:6-9 -->
 	````C#
 	...
 	protected void Application_Start()
@@ -415,7 +413,6 @@ In this task, you will register the Unity library into the method **Application_
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex01 Injecting Controllers Global application start_)
 
-	<!-- mark:10-12 -->
 	````C#
 	...
 	protected void Application_Start()
@@ -519,7 +516,6 @@ In this task, you will create a view that performs a service call to generate a 
 
 1. In the **Browse** view, add a call to **MessageService** to display an image and a message retrieved by the service.
 
-	<!-- mark:7-12 -->
 	````HTML(C#)
 	@inherits MvcMusicStore.Pages.MyBasePage
 	
@@ -671,7 +667,6 @@ To inject Browse View, you will now register the custom dependency resolver in t
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex02 Injecting a View GlobalAsax Registration_)
 
-	<!-- mark:12-16 -->
 	````C#
 	protected void Application_Start()
 	{
@@ -697,7 +692,6 @@ To inject Browse View, you will now register the custom dependency resolver in t
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex02 Injecting a View GlobalAsax Registration 2_)
 
-	<!-- mark:17-18 -->
 	````C#
 	protected void Application_Start()
 	{
@@ -725,7 +719,6 @@ To inject Browse View, you will now register the custom dependency resolver in t
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex02 Injecting a View GlobalAsax Registration 3_)
 
-	<!-- mark:19-24 -->
 	````C#
 	protected void Application_Start()
 	{
@@ -836,7 +829,6 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters FilterProvider namespace_)
 	
-	<!-- mark:5-7 -->
 	````C#
 	using System;
 	using System.Collections.Generic;
@@ -874,7 +866,6 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters IUnityContainer_)
 	
-	<!-- mark:12-17 -->
 	````C#
 	using System;
 	using System.Collections.Generic;
@@ -901,10 +892,9 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 1.In the **FilterProvider** class, implement the method **GetFilters** from **IFilterProvider** interface:
 
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters GetFilters_)
+(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters GetFilters_)
 
-	<!-- mark:19-23 -->
-	````C#
+````C#
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
@@ -930,7 +920,7 @@ In this task, you will include in the Music Store a custom action filter to trac
 	        }
 	    }
 	}
-	````
+````
 
 <a name="Ex3Task2" />
 #### Task 2 - Registering and Enabling the Filter ####
@@ -949,7 +939,6 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 1. Add a reference to the Filters namespace.
 
-	<!-- mark:11 -->
 	````C#
 	using System;
 	using System.Collections.Generic;
@@ -970,7 +959,6 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters Global asax unity registration_)
 
-	<!-- mark:7-9 -->
 	````C#
 	protected void Application_Start()
 	{
@@ -1078,14 +1066,12 @@ In this task, you will add the service in the controller.
 
 1. In **IStoreService** and **StoreService** files, change the namespace **MvcMusicStore.Services** to **MvcMusicStore.Parts**.
 
-	<!-- mark:1 -->
 	````C#
 	namespace MvcMusicStore.Parts
 	````
 
 1. In **StoreController.cs**, change **MvcMusicStore.Services** to **MvcMusicStore.Parts**.
 
-	<!-- mark:8 -->
 	````C#
 	using System;
 	using System.Collections.Generic;
