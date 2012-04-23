@@ -8,12 +8,12 @@
     </Email>
     <Name></Name>
   </Author>
-  <Description> In this Hands-On lab you will learn how to use MVC 4 with Dependency Injection. The Dependency injection design pattern separates the component behavior from the resolution of dependencies without object intervention. In this Hands-On lab you will learn MVC 4 Dependency Injection features, Unity Application Block and MEF 2.0 integration, and Dependency Injection in Controllers, Views and Action Filters.
-</Description>  
+  <Description>In this Hands-On lab you will learn how to use MVC 4 with Dependency Injection. The Dependency injection design pattern separates the component behavior from the resolution of dependencies without object intervention. In this Hands-On lab you will learn MVC 4 Dependency Injection features, Unity Application Block and MEF 2.0 integration, and Dependency Injection in Controllers, Views and Action Filters.</Description>  
   <Document ConversionType="Html">.\HOL.md</Document>
   <Title>ASP.NET MVC 4 Dependency Injection</Title>
   <Version>2.0.0</Version>
   <Source>.\Source</Source>
+  <DependencyChecker ScriptsFolder="env:PackagePath\Assets\DependencyChecker\scripts">.\Source\Setup\Dependencies.dep</DependencyChecker>
   <Technologies>
     <Technology>Visual Studio</Technology>
     <Technology>.NET Framework</Technology>
