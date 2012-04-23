@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Lab xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/ContentFramework.Core.Models">
-  <Id>ASPNETMVC4DependencyInjection</Id>
+  <Id>MVC4DependencyInjection</Id>
   <Author>
     <Blog>
     </Blog>
@@ -13,7 +13,6 @@
   <Title>ASP.NET MVC 4 Dependency Injection</Title>
   <Version>2.0.0</Version>
   <Source>.\Source</Source>
-  <DependencyChecker ScriptsFolder="env:PackagePath\Assets\DependencyChecker\scripts">.\Source\Setup\Dependencies.dep</DependencyChecker>
   <Technologies>
     <Technology>Visual Studio</Technology>
     <Technology>.NET Framework</Technology>
