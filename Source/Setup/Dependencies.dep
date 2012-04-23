@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <DependencyCheckerConfiguration>
-  <title>What's New in ASP.NET Web Forms 4.5 Hands-on Lab</title>
+  <title>ASP.NET MVC 4 Dependency Injection</title>
   <previews>
     <preview name="Check lab dependencies" description="Check required components"></preview>
     <!--<preview name="Install code snippets" description="Installs Visual Studio code snippets for the lab exercises"></preview>-->
