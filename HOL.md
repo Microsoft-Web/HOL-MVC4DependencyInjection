@@ -16,19 +16,17 @@ _Class dependencies and model complexity_
 
 You have probably heard about the Factory Pattern and the separation between the interface and the implementation using services, where the client objects are often responsible for service location.
 
-Before introducing the Dependency Injection Pattern, you  will learn about the Inversion of Control (IoC) pattern. With **Inversion of Control (IoC)**, consumer objects do not create the other objects on which they rely. Those objects come from an external source.
+The Dependency Injection pattern is a particular implementation of Inversion of Control. **Inversion of Control (IoC)** means that objects do not create other objects on which they rely to do their work. Instead, they get the objects that they need from an outside source (for example, an xml configuration file).
+
+**Dependency Injection (DI)** means that this is done without the object intervention, usually by a framework component that passes constructor parameters and set properties.
 
 ### The Dependency Injection (DI) Design Pattern ###
 
-The Dependency injection (DI) design pattern separates the component behavior from the resolution of dependencies without object intervention.
+At a high level, the goal of Dependency Injection is that a client class (e.g. _the golfer_) needs something that satisfies an interface (e.g. _IClub_). It doesn't care what the concrete type is  (e.g. _WoodClub, IronClub, WedgeClub_ or _PutterClub_), it wants someone else to handle that (e.g. a good _caddy_). The Dependency Resolver in ASP.NET MVC can allow you to register your dependency logic somewhere else (e.g. a container or a _bag of clubs_).
 
-This pattern is a particular implementation of Inversion of Control, where the consumer object receives the dependencies inside constructor properties or arguments.
-
-DI requires a framework component behind to deal with the class constructors.
-
-![Overview - Dependency Injection diagram](./images/Overview_Dependency_Injection_diagram.png?raw=true "Overview - Dependency Injection diagram")
+![Dependency Injection diagram](./images/Dependency-Injection-golf.png?raw=true "Dependency Injection illustration")
  
-_Overview - Dependency Injection diagram_
+_Dependency Injection - Golf analogy_
 
 The advantages of using Dependency Injection pattern and Inversion of Control are the following:
 
