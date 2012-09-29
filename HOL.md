@@ -286,20 +286,21 @@ In this task, you will include **Unity.Mvc3** NuGet Package to the solution.
 
 	_Installing Unity.Mvc3 NuGet Package_
 
-1. Once the **Unity.Mvc3** package is installed, explore the files and folders it autmatically adds in order to simplify Unity configuration.
+1. Once the **Unity.Mvc3** package is installed, explore the files and folders it automatically adds in order to simplify Unity configuration.
 
 	![Unity.Mvc3 package installed](images/unitymvc3-package-installed.png?raw=true "Unity.Mvc3 package installed")
 
 	_Unity.Mvc3 package installed_
 
 
-<a name="Ex1Task4" />
-####Task 4 - Registering Unity in Global.asax.cs Application_Start ####
+<a name="Ex1Task3" />
+####Task 3 - Registering Unity in Global.asax.cs Application_Start ####
 
 In this task, you will update the **Application_Start** method located in **Global.asax.cs** to call the Unity Bootstrapper initializer and then, update the Bootstrapper file registering the Service and Controller you will use for Dependency Injection.
 
 1. Now, you will hook up the Bootstrapper which is the file that initializes the Unity container and Dependency Resolver. To do this, open **Global.asax.cs** and add the following highlighted code within the **Application_Start** method.
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex01 - Initialize Unity_)
 	<!-- mark: 10 -->
 	````C#
 	protected void Application_Start()
@@ -321,6 +322,7 @@ In this task, you will update the **Application_Start** method located in **Glob
 
 1. Include the following namespaces: **MvcMusicStore.Services** and **MusicStore.Controllers**.
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex01 - Bootstrapper Adding Namespaces_)
 	<!-- mark: 4-5 -->
 	````C#
 	using System.Web.Mvc;
@@ -332,6 +334,7 @@ In this task, you will update the **Application_Start** method located in **Glob
 
 1. Replace **BuildUnityContainer** method's content with the following code that registers Store Controller and Store Service.
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex01 - Register Store Controller and Service_)
 	<!-- mark:3-8 -->
 	````C#
 	private static IUnityContainer BuildUnityContainer()
@@ -345,8 +348,8 @@ In this task, you will update the **Application_Start** method located in **Glob
 	  }
 	````
 
-<a name="Ex1Task5" />
-####Task 5 - Running the Application ####
+<a name="Ex1Task4" />
+####Task 4 - Running the Application ####
 
 In this task, you will run the application to verify that it can now be loaded after including Unity.
 
@@ -585,6 +588,7 @@ To inject **Browse** View, you will now register the custom dependency resolver 
 
 1. Register an instance of **MessageService** into the Unity container to initialize the service:
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex02 - Register Message Service_)
 	<!-- mark: 8-12 -->
 	````C#
 	private static IUnityContainer BuildUnityContainer()
@@ -605,6 +609,7 @@ To inject **Browse** View, you will now register the custom dependency resolver 
 
 1. Register **CustomViewPageActivator** as a View Page activator into the Unity container:
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex02 - Register CustomViewPageActivator_)
 	<!-- mark: 14 -->
 	````C#
 	private static IUnityContainer BuildUnityContainer()
@@ -628,6 +633,7 @@ To inject **Browse** View, you will now register the custom dependency resolver 
 
 1. Replace ASP.NET MVC 4 default dependency resolver with an instance of **UnityDependencyResolver**. To do this, replace **Initialise** method content with the following code:
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex02 - Update Dependency Resolver_)
 	<!-- mark: 3-11 -->
 	````C#
 	public static void Initialise()
@@ -718,6 +724,7 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 1. Add the **System.Web.Mvc** and **Microsoft.Practices.Unity** namespaces in **FilterProvider.cs**.
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex03 - Filter Provider Adding Namespaces_)
 	<!-- mark: 5-6 -->
 	````C#
 	using System;
@@ -749,6 +756,7 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 1. Add a **IUnityContainer** property in the **FilterProvider** class, and then create a class constructor to assign the container.
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex03 - Filter Provider Constructor_)
 	<!-- mark: 3-8 -->
 	````C#
 	public class FilterProvider : IFilterProvider
@@ -766,6 +774,7 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 1. In the **FilterProvider** class, implement the method **GetFilters** from **IFilterProvider** interface.
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex03 - Filter Provider GetFilters_)
 	<!-- mark: 9-16 -->
 	````C#
 	public class FilterProvider : IFilterProvider
@@ -805,6 +814,7 @@ In this task, you will enable site tracking. To do that, you will register the f
 
 1. Add a reference to the Filters namespace.
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex03 - Bootstrapper Adding Namespaces_)
 	<!-- mark: 7 -->
 	````C#
 	using System.Web.Mvc;
@@ -818,6 +828,7 @@ In this task, you will enable site tracking. To do that, you will register the f
 
 1. Select the **BuildUnityContainer** method and register the filter in the Unity Container. You will have to register the filter provider as well as the action filter.
 
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex03 - Register FilterProvider and ActionFilter_)
 	<!-- mark: 7-8 -->
 	````C#
 	private static IUnityContainer BuildUnityContainer()
@@ -961,13 +972,13 @@ In this task, you will run the application to verify that the Store can now be l
 <a name="Summary" />
 ## Summary ##
 
-By completing this Hands-On Lab you have learned how to use Dependency Injection in MVC 4 by integrating Unity Application Block and MEF 2.0. To achieve that, you have used Dependency Injection inside controllers, views and action filters.
+By completing this Hands-On Lab you have learned how to use Dependency Injection in MVC 4 by integrating Unity using a NuGet Package and MEF 2.0. To achieve that, you have used Dependency Injection inside controllers, views and action filters.
 
 The following concepts were covered:
 
 - MVC 4 Dependency Injection features
 
-- Unity Application Block and MEF 2.0 integration
+- Unity integration using Unity.Mvc3 NuGet Package
 
 - Dependency Injection in Controllers
 
