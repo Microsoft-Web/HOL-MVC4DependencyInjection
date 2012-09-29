@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using MvcMusicStore.Models;
-
-namespace MvcMusicStore.Filters
+﻿namespace MvcMusicStore.Filters
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using MvcMusicStore.Models;
+
     public class CustomActionFilter : ActionFilterAttribute, IActionFilter
     {
-
         void IActionFilter.OnActionExecuting(ActionExecutingContext filterContext)
         {
             // TODO: Add your acction filter's tasks here
@@ -25,10 +24,10 @@ namespace MvcMusicStore.Filters
                 DateTime = filterContext.HttpContext.Timestamp
             };
 
-            storeDB.AddToActionLog(log);
+            storeDB.ActionLog.Add(log);
             storeDB.SaveChanges();
 
-            base.OnActionExecuting(filterContext);
+            this.OnActionExecuting(filterContext);
         }
     }
 }

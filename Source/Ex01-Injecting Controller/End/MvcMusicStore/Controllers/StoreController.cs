@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿namespace MvcMusicStore.Controllers
+{    
+    using System.Web.Mvc;
+    using MvcMusicStore.Filters;
+    using MvcMusicStore.Services;
 
-using MvcMusicStore.ViewModels;
-using MvcMusicStore.Models;
-using MvcMusicStore.Filters;
-using MvcMusicStore.Services;
-
-namespace MvcMusicStore.Controllers
-{
-    [MyNewCustomActionFilter (Order = 1)]
-    [CustomActionFilter (Order = 2)]
+    [MyNewCustomActionFilter(Order = 1)]
+    [CustomActionFilter(Order = 2)]
     public class StoreController : Controller
     {
         private IStoreService service;
@@ -21,51 +14,40 @@ namespace MvcMusicStore.Controllers
         {
             this.service = service;
         }
-        
-        //
+
         // GET: /Store/
-
-        public ActionResult Index()
+        public ActionResult Details(int id)
         {
-            // Retrieve the list of genres
-            var genres = this.service.GetGenreNames();
-
-            // Create your view model
-            var viewModel = new StoreIndexViewModel
+            var album = this.service.GetAlbum(id);
+            if (album == null)
             {
-                Genres = genres.ToList(),
-                NumberOfGenres = genres.Count()
-            };
+                return this.HttpNotFound();
+            }
 
-            return View(viewModel);
+            return this.View(album);
         }
-
-        //
-        // GET: /Store/Browse?genre=Disco
 
         public ActionResult Browse(string genre)
         {
             // Retrieve Genre and its Associated Albums from database
-
             var genreModel = this.service.GetGenreByName(genre);
 
-            var viewModel = new StoreBrowseViewModel()
-            {
-                Genre = genreModel,
-                Albums = genreModel.Albums.ToList()
-            };
-
-            return View(viewModel);
+            return this.View(genreModel);
         }
 
-        //
-        // GET: /Store/Details/5
-
-        public ActionResult Details(int id)
+        public ActionResult Index()
         {
-            var album = this.service.GetAlbum(id);
+            var genres = this.service.GetGenres();
 
-            return View(album);
+            return this.View(genres);
+        }
+
+        // GET: /Store/GenreMenu
+        public ActionResult GenreMenu()
+        {
+            var genres = this.service.GetGenres();
+
+            return this.PartialView(genres);
         }
     }
 }

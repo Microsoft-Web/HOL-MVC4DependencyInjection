@@ -1,15 +1,18 @@
-﻿@{
+﻿@model MvcMusicStore.Models.Genre
+@{
     ViewBag.Title = "Browse Albums";
 }
+<div class="genre">
+    <h3>
+        <em>@Model.Name</em> Albums</h3>
 
-<h2>Browse</h2>
-
-    <h2>Browsing Genre: @Model.Genre.Name</h2>
-
-    <ul>
-
-    @foreach (var album in Model.Albums)
-    { 
-       <li>@album.Title</li>
-    }
+    <ul id="album-list">
+        @foreach (var album in Model.Albums) {
+            <li><a href="@Url.Action("Details", new { id = album.AlbumId })">
+            @if (!string.IsNullOrEmpty(album.AlbumArtUrl)){
+                <img alt="@album.Title" src="@Url.Content(@album.AlbumArtUrl)" />
+                }
+                <span>@album.Title</span> </a></li>
+        }
     </ul>
+</div>

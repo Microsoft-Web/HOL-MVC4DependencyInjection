@@ -1,160 +1,120 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using MvcMusicStore.Models;
-using MvcMusicStore.ViewModels;
-
-namespace MvcMusicStore.Controllers
+﻿namespace MvcMusicStore.Controllers
 {
+    using System.Data;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Web.Mvc;
+    using MvcMusicStore.Models;
+
     public class StoreManagerController : Controller
     {
-        MusicStoreEntities storeDB = new MusicStoreEntities();
+        private MusicStoreEntities db = new MusicStoreEntities();
 
-        //
         // GET: /StoreManager/
-
         public ActionResult Index()
         {
-            var albums = storeDB.Albums
-                .Include("Genre").Include("Artist")
-                .ToList();
-
-            return View(albums);
+            var albums = this.db.Albums.Include(a => a.Genre).Include(a => a.Artist)
+                .OrderBy(a => a.Price);
+            return this.View(albums.ToList());
         }
 
-        //
         // GET: /StoreManager/Details/5
-
-        public ActionResult Details(int id)
+        public ActionResult Details(int id = 0)
         {
-            return View();
+            Album album = this.db.Albums.Find(id);
+
+            if (album == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            return this.View(album);
         }
 
-        //
         // GET: /StoreManager/Create
-
         public ActionResult Create()
         {
-            var viewModel = new StoreManagerViewModel()
-            {
-                Album = new Album(),
-                Genres = new SelectList(storeDB.Genres.ToList(), "GenreId", "Name"),
-                Artists = new SelectList(storeDB.Artists.ToList(), "ArtistId", "Name")
-
-            };
-
-            return View(viewModel);
+            this.ViewBag.GenreId = new SelectList(this.db.Genres, "GenreId", "Name");
+            this.ViewBag.ArtistId = new SelectList(this.db.Artists, "ArtistId", "Name");
+            return this.View();
         }
 
-        //
         // POST: /StoreManager/Create
-
-        [HttpPost]        
+        [HttpPost]
         public ActionResult Create(Album album)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    // Save Album
-                    storeDB.AddToAlbums(album);
-                    storeDB.SaveChanges();
-
-                    return Redirect("Index");
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(String.Empty, ex);
+                this.db.Albums.Add(album);
+                this.db.SaveChanges();
+                return this.RedirectToAction("Index");
             }
 
-            // Invalid - redisplay with errors
-            var viewModel = new StoreManagerViewModel()
-            {
-                Album = album,
-                Genres = new SelectList(storeDB.Genres.ToList(), "GenreId", "Name", album.GenreId),
-                Artists = new SelectList(storeDB.Artists.ToList(), "ArtistId", "Name", album.ArtistId)
-            };
-
-            return View(viewModel);
+            this.ViewBag.GenreId = new SelectList(this.db.Genres, "GenreId", "Name", album.GenreId);
+            this.ViewBag.ArtistId = new SelectList(this.db.Artists, "ArtistId", "Name", album.ArtistId);
+            return this.View(album);
         }
 
-        //
         // GET: /StoreManager/Edit/5
-
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id = 0)
         {
-            Album album = storeDB.Albums.Single(a => a.AlbumId == id);
-
-            var viewModel = new StoreManagerViewModel()
+            Album album = this.db.Albums.Find(id);
+            if (album == null)
             {
-                Album = album,
-                Genres = new SelectList(storeDB.Genres.ToList(), "GenreId", "Name", album.GenreId),
-                Artists = new SelectList(storeDB.Artists.ToList(), "ArtistId", "Name", album.ArtistId)
-            };
+                return this.HttpNotFound();
+            }
 
-            return View(viewModel);
+            this.ViewBag.GenreId = new SelectList(this.db.Genres, "GenreId", "Name", album.GenreId);
+            this.ViewBag.ArtistId = new SelectList(this.db.Artists, "ArtistId", "Name", album.ArtistId);
+
+            return this.View(album);
         }
 
-        //
         // POST: /StoreManager/Edit/5
-
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Album album)
         {
-            var album = storeDB.Albums.Single(a => a.AlbumId == id);
-
-            try
+            if (ModelState.IsValid)
             {
-                // Save Album
+                this.db.Entry(album).State = EntityState.Modified;
+                this.db.SaveChanges();
 
-                UpdateModel(album, "Album");
-                storeDB.SaveChanges();
-
-                return RedirectToAction("Index");
+                return this.RedirectToAction("Index");
             }
-            catch
-            {
-                // Error occurred - so redisplay the form
 
-                var viewModel = new StoreManagerViewModel()
-                {
-                    Album = album,
-                    Genres = new SelectList(storeDB.Genres.ToList(), "GenreId", "Name", album.GenreId),
-                    Artists = new SelectList(storeDB.Artists.ToList(), "ArtistId", "Name", album.ArtistId)
-                };
+            this.ViewBag.GenreId = new SelectList(this.db.Genres, "GenreId", "Name", album.GenreId);
+            this.ViewBag.ArtistId = new SelectList(this.db.Artists, "ArtistId", "Name", album.ArtistId);
 
-                return View(viewModel);
-            }
+            return this.View(album);
         }
 
-        //
         // GET: /StoreManager/Delete/5
-
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
-            var album = storeDB.Albums.Single(a => a.AlbumId == id);
+            Album album = this.db.Albums.Find(id);
+            if (album == null)
+            {
+                return this.HttpNotFound();
+            }
 
-            return View(album);
+            return this.View(album);
         }
 
-
-        //
         // POST: /StoreManager/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
         {
-            var album = storeDB.Albums
-                .Include("OrderDetails").Include("Carts")
-                .Single(a => a.AlbumId == id);
+            Album album = this.db.Albums.Find(id);
+            this.db.Albums.Remove(album);
+            this.db.SaveChanges();
 
-            storeDB.DeleteObject(album);
-            storeDB.SaveChanges();
+            return this.RedirectToAction("Index");
+        }
 
-            return RedirectToAction("Index");	
+        protected override void Dispose(bool disposing)
+        {
+            this.db.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

@@ -1,21 +1,17 @@
-﻿@model MvcMusicStore.ViewModels.StoreIndexViewModel
-
+﻿@model IEnumerable<MvcMusicStore.Models.Genre>
 @{
-    ViewBag.Title = "Browse Genres";
+    ViewBag.Title = "Store";
 }
+<h3>Browse Genres</h3>
 
-<h2>Browse Genres</h2>
-
-<p>Select from @Model.NumberOfGenres</p>
-
+<p>
+    Select from @Model.Count() genres:</p>
 <ul>
-    @foreach (string genreName in Model.Genres)
-        { 
-        <li>
-            @Html.ActionLink(genreName, "Browse", new { genre = genreName }, null)
-           
-        </li>
-     } 
+<ul>
+    @foreach (var genre in Model)
+    {
+        <li>@Html.ActionLink(genre.Name, "Browse", new { genre = genre.Name })</li>
+    }
 </ul>
-<br/>
 
+</ul>

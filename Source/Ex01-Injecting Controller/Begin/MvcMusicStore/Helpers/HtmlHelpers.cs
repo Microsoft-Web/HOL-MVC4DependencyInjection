@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace MvcMusicStore.Helpers
+﻿namespace MvcMusicStore.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+
     public static class HtmlHelpers
     {
         public static string Truncate(this HtmlHelper helper, string input, int length)

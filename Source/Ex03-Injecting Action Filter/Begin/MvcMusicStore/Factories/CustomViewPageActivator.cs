@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.Practices.Unity;
-
-namespace MvcMusicStore.Factories
+﻿namespace MvcMusicStore.Factories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using Microsoft.Practices.Unity;
+
     public class CustomViewPageActivator : IViewPageActivator
     {
-        IUnityContainer container;
+        private IUnityContainer container;
 
         public CustomViewPageActivator(IUnityContainer container)
         {

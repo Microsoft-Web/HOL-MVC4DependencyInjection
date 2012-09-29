@@ -1,24 +1,63 @@
-﻿@model MvcMusicStore.ViewModels.StoreManagerViewModel
+﻿@model MvcMusicStore.Models.Album
 
 @{
     ViewBag.Title = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Edit</h2>
 
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
-
+@section scripts {
+<script src="@Url.Content("~/bundles/jqueryval")"></script>
+}
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Edit Album</legend>
-        @Html.EditorFor(model => model.Album, 
-                        new { Artists = Model.Artists, Genres = Model.Genres })
-        
+        <legend>Album</legend>
+
+        @Html.HiddenFor(model => model.AlbumId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GenreId, "Genre")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("GenreId", String.Empty)
+            @Html.ValidationMessageFor(model => model.GenreId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ArtistId, "Artist")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ArtistId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ArtistId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Price)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Price)
+            @Html.ValidationMessageFor(model => model.Price)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AlbumArtUrl)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AlbumArtUrl)
+            @Html.ValidationMessageFor(model => model.AlbumArtUrl)
+        </div>
+
         <p>
             <input type="submit" value="Save" />
         </p>
@@ -28,4 +67,3 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-

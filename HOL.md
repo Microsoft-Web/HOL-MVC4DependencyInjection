@@ -91,7 +91,7 @@ Estimated time to complete this lab: **30 minutes**.
 <a name="Exercise1" />
 ### Exercise 1: Injecting a Controller ###
 
-In this exercise, you will learn how to use Dependency Injection in MVC Controllers by integrating Unity Application Block. For that reason, you will include services into your MVC Music Store controllers to separate the logic from the data access. The services will create a new dependence in the controller constructor, which will be resolved using Dependency Injection with the help of **Unity** Application Block.
+In this exercise, you will learn how to use Dependency Injection in MVC Controllers by integrating Unity using a NuGet Package. For that reason, you will include services into your MVC Music Store controllers to separate the logic from the data access. The services will create a new dependence in the controller constructor, which will be resolved using Dependency Injection with the help of **Unity**.
 
 This approach will show you how to generate less coupled applications, which are more flexible and easier to maintain and test. You will also learn how to integrate MVC with Unity.
 
@@ -100,38 +100,56 @@ This approach will show you how to generate less coupled applications, which are
 The MVC Music Store provided in the begin solution now includes a service that manages the Store Controller data named **StoreService**. Below you will find the Store Service implementation. Note that all the methods return Model entities.
 
 ````C#
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MvcMusicStore.Models;
+namespace MvcMusicStore.Controllers
+{    
+    using System.Web.Mvc;
+    using MvcMusicStore.Filters;
+    using MvcMusicStore.Services;
 
-namespace MvcMusicStore.Services
-{
-    public class StoreService : MvcMusicStore.Services.IStoreService
+    [MyNewCustomActionFilter(Order = 1)]
+    [CustomActionFilter(Order = 2)]
+    public class StoreController : Controller
     {
-        MusicStoreEntities storeDB = new MusicStoreEntities();
+        private IStoreService service;
 
-        public IList<string> GetGenreNames()
+        public StoreController(IStoreService service)
         {
-            var genres = from genre in storeDB.Genres
-                         select genre.Name;
-
-            return genres.ToList();
+            this.service = service;
         }
 
-        public Genre GetGenreByName(string name)
+        // GET: /Store/
+        public ActionResult Details(int id)
         {
-            var genre = storeDB.Genres.Include("Albums")
-                    .Single(g => g.Name == name);
-            return genre;
+            var album = this.service.GetAlbum(id);
+            if (album == null)
+            {
+                return this.HttpNotFound();
+            }
+
+            return this.View(album);
         }
 
-        public Album GetAlbum(int id)
+        public ActionResult Browse(string genre)
         {
-            var album = storeDB.Albums.Single(a => a.AlbumId == id);
+            // Retrieve Genre and its Associated Albums from database
+            var genreModel = this.service.GetGenreByName(genre);
 
-            return album;
+            return this.View(genreModel);
+        }
+
+        public ActionResult Index()
+        {
+            var genres = this.service.GetGenres();
+
+            return this.View(genres);
+        }
+
+        // GET: /Store/GenreMenu
+        public ActionResult GenreMenu()
+        {
+            var genres = this.service.GetGenres();
+
+            return this.PartialView(genres);
         }
     }
 }
@@ -220,27 +238,23 @@ Throughout this lab you will learn how to deal with this problem using Dependenc
 
 In this task, you will run the Begin application, which includes the service into the Store Controller that separates the data access from the application logic.
 
-After browsing to the store you will receive an exception, as the controller service is not passed as a parameter by default:
+When running the application, you will receive an exception, as the controller service is not passed as a parameter by default:
 
-1. Open the begin solution **MvcMusicStore.sln** located in **Source\Ex01-Injecting Controller\Begin**.
+1. Open the **Begin** solution located in **Source\Ex01-Injecting Controller\Begin**.
 
 1.	Follow these steps to install the **NuGet** package dependencies.
 
-	1.	Open the **NuGet** **Package Manager Console**. To do this, select **Tools | Library Package Manager | Package Manager Console**.
+	1. Click **Project** and select **Manage NuGet Packages**.
 
-	1.	In the **Package Manager Console,** type **Install-Package NuGetPowerTools**.
+	1. In the **Manage NuGet Packages** page, click **Restore** in order to download missing packages.
 
-	1.	After installing the package, type **Enable-PackageRestore**.
-
-	1.	Build the solution. The **NuGet** dependencies will be downloaded and installed automatically.
+	1. Finally, build the solution by clicking **Build** | **Build Solution**.
 
 	>**Note:** One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.
 	
 	>For more information, see this article: <http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages>.
 
-1. Press **F5** to run the application.
-
-1. Browse to **/Store** to load Store Controller. You will get the error message "**No parameterless constructor defined for this object**":
+1. Press **Ctrl + F5** to run the application without debugging. You will get the error message "**No parameterless constructor defined for this object**":
 
  	![Error while running MVC Begin Application](./images/Error_while_running_MVC_Begin_Application.png?raw=true "Error while running MVC Begin Application")
  
@@ -253,148 +267,96 @@ In the following steps you will work on the Music Store Solution to inject the d
 <a name="Ex1Task2" />
 #### Task 2 - Including Unity into MvcMusicStore Solution ####
 
-In this task, you will include Unity Application Block 2.0 in the solution.
+In this task, you will include **Unity.Mvc3** NuGet Package to the solution.
 
->**Note:** The Unity Application Block (Unity) is a lightweight, extensible dependency injection container with optional support for instance and type interception. It is a general-purpose container for use in any type of .NET application. It provides all the common features found in dependency injection mechanisms including: object creation, abstraction of requirements by specifying dependencies at runtime and flexibility, by deferring the component configuration to the container.
+> **Note:** Unity.Mvc3 package was designed for ASP.NET MVC 3, but it is fully compatible with ASP.NET MVC 4.
+>
+>Unity is a lightweight, extensible dependency injection container with optional support for instance and type interception. It is a general-purpose container for use in any type of .NET application. It provides all the common features found in dependency injection mechanisms including: object creation, abstraction of requirements by specifying dependencies at runtime and flexibility, by deferring the component configuration to the container.
 
-You can read more about Unity 2.0 at [msdn](http://msdn.microsoft.com/en-us/library/ff663144.aspx).
 
-1. In the **MvcMusicStore** project, add a reference to **Microsoft.Practices.Unity.dll**, which is included in the **Source\Assets\Unity 2.0\** folder of this lab.
+1. Install **Unity.Mvc3** NuGet Package in the **MvcMusicStore** project. To do this, open the **Package Manager Console** from **View** | **Other Windows**.
 
-<a name="Ex1Task3" />
-#### Task 3 - Adding a Unity Controller Factory ####
+1. Run the following command.
 
-In this task, you will add a custom controller factory for **Unity**. This class implements the **IControllerFactory** interface, extending **CreateController** and **ReleaseController** methods to work with Unity. This factory will create the instances of the controllers that work with Dependency Injection.
-
->**Note:** A controller factory is an implementation of the _IControllerFactory_ interface, which is responsible for locating and for creating an instance of the controller type. The following implementation of **CreateController** finds the controller by its name in the Unity container and returns an instance if it is found. Otherwise, it delegates the creation of the controller to an inner factory. One of the advantages of this logic is that controllers can be registered by name. You can find **IControllerFactory** interface reference at [msdn](http://msdn.microsoft.com/en-us/library/system.web.mvc.icontrollerfactory.aspx).
-
-1. In the **MvcMusicStore** project, create a new folder named **Factories**, and add the **UnityControllerFactory** class, which is included in the **Source\Assets\C#** folder of this lab.
-
-	````C# 
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using System.Web.Mvc;
-	using Microsoft.Practices.Unity;
-	using System.Web.Routing;
-	
-	namespace MvcMusicStore.Factories
-	{
-	    public class UnityControllerFactory : IControllerFactory
-	    {
-	        private IUnityContainer _container;
-	        private IControllerFactory _innerFactory;
-	
-	        public UnityControllerFactory(IUnityContainer container)
-	            : this(container, new DefaultControllerFactory())
-	        {
-	        }
-	
-	        protected UnityControllerFactory(IUnityContainer container, IControllerFactory innerFactory)
-	        {
-	            _container = container;
-	            _innerFactory = innerFactory;
-	        }
-	
-	        public IController CreateController(RequestContext requestContext, string controllerName)
-	        {
-	            try
-	            {
-	                return _container.Resolve<IController>(controllerName);
-	            }
-	            catch (Exception)
-	            {
-	                return _innerFactory.CreateController(requestContext, controllerName);
-	            }
-	        }
-	
-	        public void ReleaseController(IController controller)
-	        {
-	            _container.Teardown(controller);
-	        }
-	
-	        public System.Web.SessionState.SessionStateBehavior GetControllerSessionBehavior(RequestContext requestContext, string controllerName)
-	        {
-	            return System.Web.SessionState.SessionStateBehavior.Default;
-	        }
-	    }
-	}
+	````PMC
+	Install-Package Unity.Mvc3
 	````
 
-	>**Note:** This factory class can be reused in any project that uses Dependency Injection for Controllers.
+	![Installing Unity.Mvc3 NuGet Package](images/installing-unitymvc3-nuget-package.png?raw=true "Installing Unity.Mvc3 NuGet Package")
+
+	_Installing Unity.Mvc3 NuGet Package_
+
+1. Once the **Unity.Mvc3** package is installed, explore the files and folders it autmatically adds in order to simplify Unity configuration.
+
+	![Unity.Mvc3 package installed](images/unitymvc3-package-installed.png?raw=true "Unity.Mvc3 package installed")
+
+	_Unity.Mvc3 package installed_
+
 
 <a name="Ex1Task4" />
 ####Task 4 - Registering Unity in Global.asax.cs Application_Start ####
 
-In this task, you will register the Unity library into the method **Application_Start** located in **Global.asax.cs**.
+In this task, you will update the **Application_Start** method located in **Global.asax.cs** to call the Unity Bootstrapper initializer and then, update the Bootstrapper file registering the Service and Controller you will use for Dependency Injection.
 
-1. Open **Global.asax.cs**.
+1. Now, you will hook up the Bootstrapper which is the file that initializes the Unity container and Dependency Resolver. To do this, open **Global.asax.cs** and add the following highlighted code within the **Application_Start** method.
 
-1. Include the following namespaces **Microsoft.Practices.Unity**, **MvcMusicStore.Services**, **MvcMusicStore.Factories** and **MvcMusicStore.Controllers**.
-
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex01 Injecting Controllers Global using_)
-
+	<!-- mark: 10 -->
 	````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
+	protected void Application_Start()
+	  {
+			AreaRegistration.RegisterAllAreas();
+
+			WebApiConfig.Register(GlobalConfiguration.Configuration);
+			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+			RouteConfig.RegisterRoutes(RouteTable.Routes);
+			BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+			Bootstrapper.Initialise();
+
+			AppConfig.Configure();
+	  }
+	````
+
+1. Open **Bootstrapper.cs** file.
+
+1. Include the following namespaces: **MvcMusicStore.Services** and **MusicStore.Controllers**.
+
+	<!-- mark: 4-5 -->
+	````C#
 	using System.Web.Mvc;
-	using System.Web.Routing;
 	using Microsoft.Practices.Unity;
+	using Unity.Mvc3;
 	using MvcMusicStore.Services;
-	using MvcMusicStore.Factories;
 	using MvcMusicStore.Controllers;
 	````
 
-1. Create a new Unity Container in **Global.asax.cs** **Application_Start**, and register the Store Service and the Store Controller.
+1. Replace **BuildUnityContainer** method's content with the following code that registers Store Controller and Store Service.
 
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex01 Injecting Controllers Unity Container_)
-
+	<!-- mark:3-8 -->
 	````C#
-	...
-	protected void Application_Start()
-	{
-		...
-	            
-		var container = new UnityContainer();
-		container.RegisterType<IStoreService, StoreService>();
-		container.RegisterType<IController, StoreController>("Store");	
-	}
-	...
+	private static IUnityContainer BuildUnityContainer()
+	  {
+			var container = new UnityContainer();
+
+			container.RegisterType<IStoreService, StoreService>();
+			container.RegisterType<IController, StoreController>("Store");        
+
+			return container;
+	  }
 	````
-
-1. Register the **UnityControllerFactory** type as the factory that will be used for creating controller instances:
-
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex01 Injecting Controllers Global application start_)
-
-	````C#
-	...
-	protected void Application_Start()
-	{
-		...
-		           
-		var container = new UnityContainer();
-		container.RegisterType<IStoreService, StoreService>();
-		container.RegisterType<IController, StoreController>("Store");
-
-		var factory = new UnityControllerFactory(container);
-		ControllerBuilder.Current.SetControllerFactory(factory);
-	}
-	...
-	````
-
-	>**Note:** **ControllerBuilder** is an MVC class responsible for dynamically building a controller. You can read more about ControllerBuilder at [msdn](http://msdn.microsoft.com/en-us/library/system.web.mvc.controllerbuilder.aspx).
 
 <a name="Ex1Task5" />
 ####Task 5 - Running the Application ####
 
-In this task, you will run the application to verify that the Store can now be loaded after including Unity.
+In this task, you will run the application to verify that it can now be loaded after including Unity.
 
-1. Press **F5** to run the application.
+1. Press **F5** to run the application, the application should now load without showing any error message.
 
-1. Browse to **/Store**. This will invoke **StoreController**, which is now created by using **UnityControllerFactory**.
+	![Running Application with Dependency Injection](images/running-application-with-dependency-injection.png?raw=true "Running Application with Dependency Injection")
+
+	_Running Application with Dependency Injection_
+
+1. Browse to **/Store**. This will invoke **StoreController**, which is now created using **Unity**.
 
  	![MVC Music Store](./images/MVC_Music_Store.png?raw=true "MVC Music Store")
  
@@ -409,76 +371,75 @@ In the following exercises you will learn how to extend the Dependency Injection
 
 In this exercise, you will learn how to use Dependency Injection in a view with the new features of MVC 4 for Unity integration. In order to do that, you will call a custom service inside the Store Browse View, which will show a message and an image below.
 
-Then, you will integrate the project with Unity Application Block and create a custom dependency resolver to inject the dependencies.
+Then, you will integrate the project with Unity and create a custom dependency resolver to inject the dependencies.
 
 <a name="Ex2Task1" />
 #### Task 1 - Creating a View that Consumes a Service ####
 
 In this task, you will create a view that performs a service call to generate a new dependency. The service consists in a simple messaging service included in this solution.
 
-1. Open the begin solution **MvcMusicStore.sln** in the **Source\Ex02-Injecting View\Begin** folder.
-
-1.	Follow these steps to install the **NuGet** package dependencies.
-
-	1.	Open **NuGet** **Package Manager Console**. To do this, select **Tools | Library Package Manager | Package Manager Console**.
-
-	1.	In the **Package Manager Console,** type **Install-Package NuGetPowerTools**.
-
-	1.	After installing the package, type **Enable-PackageRestore**.
-
-	1.	Build the solution. The **NuGet** dependencies will be downloaded and installed automatically.
+1. Open the **Begin** solution located in the **Source\Ex02-Injecting View\Begin** folder. Otherwise, you might continue using the **End** solution obtained by completing the previous exercise.
+	1. If you opened the provided **Begin** solution, you will need to download some missing NuGet packages before continue. To do this, click **Project** and select **Manage NuGet Packages**.
+	1. In the **Manage NuGet Packages** page, click **Restore** in order to download missing packages.
+	1. Finally, build the solution by clicking **Build** | **Build Solution**.
 
 	>**Note:** One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.
 	
 	>For more information, see this article: <http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages>.
 
-1. Include the **MessageService.cs** and the **IMessageService.cs** classes located in the **Source\Assets\C#** folder in **/Services**.
+1. Include the **MessageService.cs** and the **IMessageService.cs** classes located in the **Source\Assets** folder in **/Services**. To do this, right-click **Services** folder and select **Add Existing Item**. Browse to the files' location and include them.
+
+	![Adding Message Service and Service Interface](images/adding-message-service-and-service-interface.png?raw=true "Adding Message Service and Service Interface")
+
+	_Adding Message Service and Service Interface_
 
 	>**Note:** The **IMessageService** interface defines two properties implemented by the **MessageService** class. These properties -**Message** and **ImageUrl**- store the message and the URL of the image to be displayed.
 
-1. Create the folder **/Pages** in the project's root folder, and then add the existing class **MyBasePage.cs** from **Source\Assets\C#**. The base page you will inherit from has the following structure.
+1. Create the folder **/Pages** in the project's root folder, and then add the existing class **MyBasePage.cs** from **Source\Assets**. The base page you will inherit from has the following structure.
+
+	![Pages folder](images/pages-folder.png?raw=true "Pages folder")
 
 	````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using Microsoft.Practices.Unity;
-	using MvcMusicStore.Services;
-	
 	namespace MvcMusicStore.Pages
 	{
-	    public class MyBasePage : System.Web.Mvc.WebViewPage<MvcMusicStore.ViewModels.StoreBrowseViewModel>
-	    {
-			 [Dependency]
-			 public IMessageService MessageService { get; set; }
-			  
-			 public override void Execute()
-			 {
-			 }
-	    }
+		 using System;
+		 using System.Collections.Generic;
+		 using System.Linq;
+		 using System.Web;
+		 using Microsoft.Practices.Unity;
+		 using MvcMusicStore.Models;
+		 using MvcMusicStore.Services;
+
+		 public class MyBasePage : System.Web.Mvc.WebViewPage<Genre>
+		 {
+			  [Dependency]
+			  public IMessageService MessageService { get; set; }
+
+			  public override void Execute()
+			  {
+			  }
+		 }
 	}
 	````
 
-	>**Note:** Due to a technical issue in the **ASP.NET** engine, the **dependency** at **IMessageService** interface cannot be included in the respective **View Model** Class.
-	>
-	> For that reason, **MyBasePage** intercepts the relationship between the View and the View-Model, and the dependency injection at MessageService can now be inherited by the View.
+1. Open **Browse.cshtml** view from **/Views/Store** folder, and make it inherit from **MyBasePage.cs**.
 
-1. Open **Browse.cshtml** view from **/Views/Store** project folder, and make it inherit from **MyBasePage.cs**.
-
+	<!-- mark: 1 -->
 	````C#
 	@inherits MvcMusicStore.Pages.MyBasePage
+	@{
+		 ViewBag.Title = "Browse Albums";
+	}
 	````
 
 1. In the **Browse** view, add a call to **MessageService** to display an image and a message retrieved by the service.
 
+	<!-- mark: 4-9 -->
 	````HTML(C#)
-	@inherits MvcMusicStore.Pages.MyBasePage
-	
+	@inherits MvcMusicStore.Pages.MyBasePage	
 	@{
 		Viewbag.Title = "Browse Albums";
 	}
-
 	<div>
 		@this.MessageService.Message
 		<br />
@@ -511,84 +472,87 @@ In the previous task, you injected a new dependency inside a view to perform a s
 >	}
 >````
 
-1. Copy **CustomViewPageActivator.cs** from **/Sources/Assets/C#** to **Factories** folder. To do that, right-click  the **/Factories** folder, select **Add | Existing Item** and then select the recently copied file. This class implements the **IViewPageActivator** interface to hold the Unity Container.
+1. Create the /**Factories** folder in the project's root folder.
+
+1. Include **CustomViewPageActivator.cs** to your solution from **/Sources/Assets/** to **Factories** folder. To do that, right-click  the **/Factories** folder, select **Add | Existing Item** and then select **CustomViewPageActivator.cs**. This class implements the **IViewPageActivator** interface to hold the Unity Container.
  
 	````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using System.Web.Mvc;
-	using Microsoft.Practices.Unity;
-	
 	namespace MvcMusicStore.Factories
 	{
-	    public class CustomViewPageActivator : IViewPageActivator
-	    {
-	        IUnityContainer container;
-	
-	        public CustomViewPageActivator(IUnityContainer container)
-	        {
-	            this.container = container;
-	        }
-	
-	        public object Create(ControllerContext controllerContext, Type type)
-	        {
-	            return this.container.Resolve(type);
-	        }
-	    }
+		 using System;
+		 using System.Collections.Generic;
+		 using System.Linq;
+		 using System.Web;
+		 using System.Web.Mvc;
+		 using Microsoft.Practices.Unity;
+
+		 public class CustomViewPageActivator : IViewPageActivator
+		 {
+			  private IUnityContainer container;
+
+			  public CustomViewPageActivator(IUnityContainer container)
+			  {
+					this.container = container;
+			  }
+
+			  public object Create(ControllerContext controllerContext, Type type)
+			  {
+					return this.container.Resolve(type);
+			  }
+		 }
 	}
 	````
 
 	>**Note:** **CustomViewPageActivator** is responsible for managing the creation of a view by using a Unity container.
 
-1. Copy **UnityDependencyResolver.cs** from **/Sources/Assets/C#** to  **/Factories** folder and add the class to the project. To do that, right-click  the **/Factories** folder, select **Add | Existing Item** and then select the recently copied file.
+1. Include **UnityDependencyResolver.cs** file from **/Sources/Assets** to  **/Factories** folder. To do that, right-click  the **/Factories** folder, select **Add | Existing Item** and then select **UnityDependencyResolver.cs** file.
 
 	````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using System.Web.Mvc;
-	using Microsoft.Practices.Unity;
-	
 	namespace MvcMusicStore.Factories
 	{
-	    public class UnityDependencyResolver : IDependencyResolver
-	    {
-	        IUnityContainer container;
-	        IDependencyResolver resolver;
-	
-	        public UnityDependencyResolver(IUnityContainer container, IDependencyResolver resolver)
-	        {
-	            this.container = container;
-	            this.resolver = resolver;
-	        }
-	
-	        public object GetService(Type serviceType)
-	        {
-	            try
-	            {
-	                return this.container.Resolve(serviceType);
-	            }
-	            catch
-	            {
-	                return this.resolver.GetService(serviceType);
-	            }
-	        }
-	
-	        public IEnumerable<object> GetServices(Type serviceType)
-	        {
-	            try
-	            {
-	                return this.container.ResolveAll(serviceType);
-	            }
-	            catch
-	            {
-	                return this.resolver.GetServices(serviceType);
-	            }
-	        }
-	    }
+		 using System;
+		 using System.Collections.Generic;
+		 using System.Linq;
+		 using System.Web;
+		 using System.Web.Mvc;
+		 using Microsoft.Practices.Unity;
+
+		 public class UnityDependencyResolver : IDependencyResolver
+		 {
+			  private IUnityContainer container;
+
+			  private IDependencyResolver resolver;
+
+			  public UnityDependencyResolver(IUnityContainer container, IDependencyResolver resolver)
+			  {
+					this.container = container;
+					this.resolver = resolver;
+			  }
+
+			  public object GetService(Type serviceType)
+			  {
+					try
+					{
+						 return this.container.Resolve(serviceType);
+					}
+					catch
+					{
+						 return this.resolver.GetService(serviceType);
+					}
+			  }
+
+			  public IEnumerable<object> GetServices(Type serviceType)
+			  {
+					try
+					{
+						 return this.container.ResolveAll(serviceType);
+					}
+					catch
+					{
+						 return this.resolver.GetServices(serviceType);
+					}
+			  }
+		 }
 	}
 	````
 
@@ -598,7 +562,7 @@ In the previous task, you injected a new dependency inside a view to perform a s
 In the following task both implementations will be registered to let the model know the location of the services and the views.
 
 <a name="Ex2Task3" />
-#### Task 3 - Registering for Dependency Injection in Global.asax.cs Application_Start ####
+#### Task 3 - Registering for Dependency Injection within Unity container ####
 
 In this task, you will put all the previous things together to make Dependency Injection work.
 
@@ -615,93 +579,69 @@ Up to now your solution has the following elements:
 - A View Page activator - **CustomViewPageActivator ** that creates the page.
 
  
-To inject Browse View, you will now register the custom dependency resolver in the Unity container.
+To inject **Browse** View, you will now register the custom dependency resolver in the Unity container.
 
-1. Open **Global.asax.cs**.
+1. Open **Bootstrapper.cs** file.
 
 1. Register an instance of **MessageService** into the Unity container to initialize the service:
 
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex02 Injecting a View GlobalAsax Registration_)
-
+	<!-- mark: 8-12 -->
 	````C#
-	protected void Application_Start()
-	{
-		...
+	private static IUnityContainer BuildUnityContainer()
+        {
+            var container = new UnityContainer();
 
-		var container = new UnityContainer();
-		container.RegisterType<IStoreService, StoreService>();
-		container.RegisterType<IController, StoreController>("Store");
+            container.RegisterType<IStoreService, StoreService>();
+            container.RegisterType<IController, StoreController>("Store");
 
-		var factory = new UnityControllerFactory(container);
-		ControllerBuilder.Current.SetControllerFactory(factory);
-
-		container.RegisterInstance<IMessageService>(new MessageService { 
-			Message = "You are welcome to our Web Camps Training Kit!",
-			ImageUrl = "/Content/Images/webcamps.png"    
-		});
-
+            container.RegisterInstance<IMessageService>(new MessageService
+            {
+                Message = "You are welcome to our Web Camps Training Kit!",
+                ImageUrl = "/Content/Images/webcamps.png"
+            });
 		...
 	}
 	````
 
 1. Register **CustomViewPageActivator** as a View Page activator into the Unity container:
 
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex02 Injecting a View GlobalAsax Registration 2_)
-
+	<!-- mark: 14 -->
 	````C#
-	protected void Application_Start()
-	{
-		...
+	private static IUnityContainer BuildUnityContainer()
+	  {
+			var container = new UnityContainer();
 
-		var container = new UnityContainer();
-		container.RegisterType<IStoreService, StoreService>();
-		container.RegisterType<IController, StoreController>("Store");
+			container.RegisterType<IStoreService, StoreService>();
+			container.RegisterType<IController, StoreController>("Store");
 
-		var factory = new UnityControllerFactory(container);
-		ControllerBuilder.Current.SetControllerFactory(factory);
+			container.RegisterInstance<IMessageService>(new MessageService
+			{
+				 Message = "You are welcome to our Web Camps Training Kit!",
+				 ImageUrl = "/Content/Images/webcamps.png"
+			});
 
-		container.RegisterInstance<IMessageService>(new MessageService { 
-			Message = "You are welcome to our Web Camps Training Kit!",
-			ImageUrl = "/Content/Images/webcamps.png"    
-		});
+			container.RegisterType<IViewPageActivator, CustomViewPageActivator>(new InjectionConstructor(container));
 
-		container.RegisterType<IViewPageActivator, CustomViewPageActivator>(new InjectionConstructor(container));
-
-		...
-	}
+			return container;
+	  }
 	````
 
-1. Replace MVC 4 default dependency resolver with an instance of **UnityDependencyResolver**:
+1. Replace ASP.NET MVC 4 default dependency resolver with an instance of **UnityDependencyResolver**. To do this, replace **Initialise** method content with the following code:
 
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex02 Injecting a View GlobalAsax Registration 3_)
-
+	<!-- mark: 3-11 -->
 	````C#
-	protected void Application_Start()
-	{
-		...
+	public static void Initialise()
+	  {
+			var container = BuildUnityContainer();
 
-		var container = new UnityContainer();
-		container.RegisterType<IStoreService, StoreService>();
-		container.RegisterType<IController, StoreController>("Store");
+			DependencyResolver.SetResolver(new Unity.Mvc3.UnityDependencyResolver(container));
 
-		var factory = new UnityControllerFactory(container);
-		ControllerBuilder.Current.SetControllerFactory(factory);
+			IDependencyResolver resolver = DependencyResolver.Current;
 
-		container.RegisterInstance<IMessageService>(new MessageService { 
-			Message = "You are welcome to our Web Camps Training Kit!",
-			ImageUrl = "/Content/Images/webcamps.png"    
-		});
+			IDependencyResolver newResolver = new Factories.UnityDependencyResolver(container, resolver);
 
-		container.RegisterType<IViewPageActivator, CustomViewPageActivator>(new InjectionConstructor(container));
-
-		IDependencyResolver resolver = DependencyResolver.Current;
-
-		IDependencyResolver newResolver = new UnityDependencyResolver(container, resolver);
-
-		DependencyResolver.SetResolver(newResolver);
-	
-		...
-	}
+			DependencyResolver.SetResolver(newResolver);
+	  }
 	````
 
 	>**Note:** ASP.NET MVC provides a default dependency resolver class. To work with custom dependency resolvers as the one we have created for unity, this resolver has to be replaced.
@@ -713,7 +653,7 @@ In this task, you will run the application to verify that the Store Browser cons
 
 1. Press **F5** to run the application.
 
-1. Browse to **/Store** and enter to any of the genres that are shown below. In this example, we are entering to "**Rock**":
+1. Click **Rock** within the Genres Menu and see how the **MessageService** was injected to the view and loaded the welcome message and the image. In this example, we are entering to "**Rock**":
 
  	![MVC Music Store - View Injection](./images/Music_Store.png?raw=true "MVC Music Store - View Injection")
  
@@ -724,56 +664,51 @@ In this task, you will run the application to verify that the Store Browser cons
 <a name="Exercise3" />
 ### Exercise 3: Injecting Action Filters ###
 
-In the previous Hands-On lab **Custom Action Filters** you have worked with filters customization and injection. In this exercise, you will learn how to inject filters with Dependency Injection by using the Unity Application Block container. To do that, you will add to the Music Store solution a custom action filter that will trace the activity of the site.
+In the previous Hands-On lab **Custom Action Filters** you have worked with filters customization and injection. In this exercise, you will learn how to inject filters with Dependency Injection by using the Unity container. To do that, you will add to the Music Store solution a custom action filter that will trace the activity of the site.
 
 <a name="Ex3Task1" />
 #### Task 1 - Including the Tracking Filter in the Solution ####
 
 In this task, you will include in the Music Store a custom action filter to trace events. As custom action filter concepts are already treated in the previous Lab "Custom Action Filters", you will just include the filter class from the Assets folder of this lab, and then create a Filter Provider for Unity:
 
-1. Open the begin solution at **/Source/Ex03 - Injecting Filters/Begin/MvcMusicStore.sln**.
+1. Open the **Begin** solution located in the **Source\Ex03 - Injecting Filters\Begin** folder. Otherwise, you might continue using the **End** solution obtained by completing the previous exercise.
+	1. If you opened the provided **Begin** solution, you will need to download some missing NuGet packages before continue. To do this, click **Project** and select **Manage NuGet Packages**. 
 
-1. Follow these steps to install the **NuGet** package dependencies.
+	1. In the **Manage NuGet Packages** page, click **Restore** in order to download missing packages. 
 
-	1.	Open the **NuGet** **Package Manager Console**. To do this, select **Tools | Library Package Manager | Package Manager Console**.
-
-	1.	In the **Package Manager Console,** type **Install-Package NuGetPowerTools**.
-
-	1.	After installing the package, type **Enable-PackageRestore**.
-
-	1.	Build the solution. The **NuGet** dependencies will be downloaded and installed automatically.
+	1. Finally, build the solution by clicking **Build** | **Build Solution**. 
 
 	>**Note:** One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.
 	
 	>For more information, see this article: <http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages>.
 
-1. Copy **TraceActionFilter.cs** from **/Sources/Assets/C#** to **/Filters** project folder. Then, in the Solution Explorer, add the file to **/Filters** folder.
+1. Include **TraceActionFilter.cs** file from **/Sources/Assets** to **/Filters** folder.
 
 	````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using System.Web.Mvc;
-	
 	namespace MvcMusicStore.Filters
 	{
-	    public class TraceActionFilter : IActionFilter
-	    {
-	        public void OnActionExecuted(ActionExecutedContext filterContext)
-	        {
-	            filterContext.HttpContext.Trace.Write("OnActionExecuted");
-	            filterContext.HttpContext.Trace.Write("Action " + filterContext.ActionDescriptor.ActionName);
-	            filterContext.HttpContext.Trace.Write("Controller " + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName);
-	        }
-	
-	        public void OnActionExecuting(ActionExecutingContext filterContext)
-	        {
-	            filterContext.HttpContext.Trace.Write("OnActionExecuting");
-	            filterContext.HttpContext.Trace.Write("Action " + filterContext.ActionDescriptor.ActionName);
-	            filterContext.HttpContext.Trace.Write("Controller " + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName);
-	        }
-	    }
+		 using System;
+		 using System.Collections.Generic;
+		 using System.Linq;
+		 using System.Web;
+		 using System.Web.Mvc;
+
+		 public class TraceActionFilter : IActionFilter
+		 {
+			  public void OnActionExecuted(ActionExecutedContext filterContext)
+			  {
+					filterContext.HttpContext.Trace.Write("OnActionExecuted");
+					filterContext.HttpContext.Trace.Write("Action " + filterContext.ActionDescriptor.ActionName);
+					filterContext.HttpContext.Trace.Write("Controller " + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName);
+			  }
+
+			  public void OnActionExecuting(ActionExecutingContext filterContext)
+			  {
+					filterContext.HttpContext.Trace.Write("OnActionExecuting");
+					filterContext.HttpContext.Trace.Write("Action " + filterContext.ActionDescriptor.ActionName);
+					filterContext.HttpContext.Trace.Write("Controller " + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName);
+			  }
+		 }
 	}
 	````
 
@@ -783,8 +718,7 @@ In this task, you will include in the Music Store a custom action filter to trac
 
 1. Add the **System.Web.Mvc** and **Microsoft.Practices.Unity** namespaces in **FilterProvider.cs**.
 
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters FilterProvider namespace_)
-	
+	<!-- mark: 5-6 -->
 	````C#
 	using System;
 	using System.Collections.Generic;
@@ -792,143 +726,111 @@ In this task, you will include in the Music Store a custom action filter to trac
 	using System.Web;
 	using System.Web.Mvc;
 	using Microsoft.Practices.Unity;
-	
+
 	namespace MvcMusicStore.Filters
 	{
-	    public class FilterProvider	{
-	    }
+		 public class FilterProvider
+		 {
+		 }
 	}
 	````
 
 1. Make the class inherit from **IFilterProvider** Interface.
 
+	<!-- mark: 3 -->
 	````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using System.Web.Mvc;
-	using Microsoft.Practices.Unity;
-	
 	namespace MvcMusicStore.Filters
 	{
-	    public class FilterProvider : IFilterProvider
-	    {
-	    }
+		 public class FilterProvider : IFilterProvider
+		 {
+		 }
 	}
 	````
 
 1. Add a **IUnityContainer** property in the **FilterProvider** class, and then create a class constructor to assign the container.
 
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters IUnityContainer_)
-	
+	<!-- mark: 3-8 -->
 	````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using System.Web.Mvc;
-	using Microsoft.Practices.Unity;
-	
-	namespace MvcMusicStore.Filters
-	{
-	    public class FilterProvider : IFilterProvider
-	    {
-	        IUnityContainer container;
-	
-	        public FilterProvider(IUnityContainer container)
-	        {
-	            this.container = container;
-	        }
-	    }
-	}
+	public class FilterProvider : IFilterProvider
+    {
+        private IUnityContainer container;
+
+        public FilterProvider(IUnityContainer container)
+        {
+            this.container = container;
+        }
+    }
 	````
 
 	>**Note:** The filter provider class constructor is not creating a **new** object inside. The container is passed as a parameter, and the dependency is solved by Unity.
 
-1.In the **FilterProvider** class, implement the method **GetFilters** from **IFilterProvider** interface:
+1. In the **FilterProvider** class, implement the method **GetFilters** from **IFilterProvider** interface.
 
-(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters GetFilters_)
+	<!-- mark: 9-16 -->
+	````C#
+	public class FilterProvider : IFilterProvider
+	 {
+		  private IUnityContainer container;
 
-````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using System.Web.Mvc;
-	using Microsoft.Practices.Unity;
-	
-	namespace MvcMusicStore.Filters
-	{
-	    public class FilterProvider : IFilterProvider
-	    {
-	        IUnityContainer container;
-	
-	        public FilterProvider(IUnityContainer container)
-	        {
-	            this.container = container;
-	        }
-	
-	        public IEnumerable<Filter> GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
-	        {
-	            foreach (IActionFilter actionFilter in container.ResolveAll<IActionFilter>())
-	                yield return new Filter(actionFilter, FilterScope.First, null);
-	        }
-	    }
-	}
-````
+		  public FilterProvider(IUnityContainer container)
+		  {
+				this.container = container;
+		  }
+
+		  public IEnumerable<Filter> GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
+		  {
+				foreach (IActionFilter actionFilter in this.container.ResolveAll<IActionFilter>())
+				{
+					 yield return new Filter(actionFilter, FilterScope.First, null);
+				}
+		  }
+	 }
+	````
 
 <a name="Ex3Task2" />
 #### Task 2 - Registering and Enabling the Filter ####
 
-1. In this task, you will enable site tracking. To do that, you will register the filter in **Global.asax.cs Application_Start** method to start tracing:
+In this task, you will enable site tracking. To do that, you will register the filter in **Bootstrapper.cs BuildUnityContainer** method to start tracing:
 
 1. Open **Web.config** located in the project root and enable trace tracking at System.Web group.
 
+	<!-- mark: 2 -->
 	````XML
 	  <system.web>
 	    <trace enabled="true"/>
 	    <compilation debug="true" targetFramework="4.5">
 	````
 
-1. Open **Global.asax.cs** at project root.
+1. Open **Bootstrapper.cs** at project root.
 
 1. Add a reference to the Filters namespace.
 
+	<!-- mark: 7 -->
 	````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
 	using System.Web.Mvc;
-	using System.Web.Routing;
 	using Microsoft.Practices.Unity;
+	using Unity.Mvc3;
 	using MvcMusicStore.Services;
-	using MvcMusicStore.Factories;
 	using MvcMusicStore.Controllers;
+	using MvcMusicStore.Factories;
 	using MvcMusicStore.Filters;
-	
-	namespace MvcMusicStore
 	````
 
-1. Select the **Application_Start** method and register the filter in the Unity Container. You will have to register the filter provider as well as the action filter.
+1. Select the **BuildUnityContainer** method and register the filter in the Unity Container. You will have to register the filter provider as well as the action filter.
 
-	(Code Snippet - _ASP.NET MVC 4 Dependency Injection - Ex03 Injecting Action Filters Global asax unity registration_)
-
+	<!-- mark: 7-8 -->
 	````C#
-	protected void Application_Start()
-	{
-		...
+	private static IUnityContainer BuildUnityContainer()
+	  {
+			var container = new UnityContainer();
 
-		container.RegisterType<IViewPageActivator, CustomViewPageActivator>(new InjectionConstructor(container));
+			...
+			
+			container.RegisterInstance<IFilterProvider>("FilterProvider", new FilterProvider(container));
+			container.RegisterInstance<IActionFilter>("LogActionFilter", new TraceActionFilter());
 
-		container.RegisterInstance<IFilterProvider>("FilterProvider", new FilterProvider(container));
-		container.RegisterInstance<IActionFilter>("LogActionFilter", new TraceActionFilter());
-
-		IDependencyResolver resolver = DependencyResolver.Current;
-
-		...
-	}
+			return container;
+	  }
 	````
 
 <a name="Ex3Task3" />
@@ -938,9 +840,9 @@ In this task, you will run the application and test that the custom action filte
 
 1. Press **F5** to run the application.
 
-1. Browse to **/Store** and select **Rock** genre. You can browse to more genres if you want to.
+1. Click **Rock** within the Genres Menu. You can browse to more genres if you want to.
 
- 	![Music Store](./images/Music_Store.png?raw=true "Music Store")
+ 	![Music Store](./images/Music_Store2.png?raw=true "Music Store")
  
 	_Music Store_
 

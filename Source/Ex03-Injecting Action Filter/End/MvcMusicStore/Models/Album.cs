@@ -1,42 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-
-namespace MvcMusicStore.Models
+﻿namespace MvcMusicStore.Models
 {
-    [MetadataType(typeof(AlbumMetaData))]
-    public partial class Album
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
+    public class Album
     {
-        // Validation rules for the Album class
+        [ScaffoldColumn(false)]
+        public int AlbumId { get; set; }
 
-        [Bind(Exclude = "AlbumId")]
-        public class AlbumMetaData
-        {
-            [ScaffoldColumn(false)]
-            public object AlbumId { get; set; }
+        public int GenreId { get; set; }
 
-            [DisplayName("Genre")]
-            public object GenreId { get; set; }
+        public int ArtistId { get; set; }
 
-            [DisplayName("Artist")]
-            public object ArtistId { get; set; }
+        [Required]
+        [StringLength(160, MinimumLength = 2)]
+        public string Title { get; set; }
 
-            [Required(ErrorMessage = "An Album Title is required")]
-            [DisplayFormat(ConvertEmptyStringToNull = false)]
-            [StringLength(160)]
-            public object Title { get; set; }
+        [Required]
+        [Range(0.01, 100.00)]
+        [DataType(DataType.Currency)]
+        public decimal Price { get; set; }
 
-            [DisplayName("Album Art URL")]
-            [StringLength(1024)]
-            public object AlbumArtUrl { get; set; }
+        [DisplayName("Album Art URL")]
+        [DataType(DataType.ImageUrl)]
+        [StringLength(1024)]
+        public string AlbumArtUrl { get; set; }
 
-            [Required(ErrorMessage = "Price is required")]
-            [Range(0.01, 100.00, ErrorMessage = "Price must be between 0.01 and 100.00")]
-            public object Price { get; set; }
-        }
+        public virtual Genre Genre { get; set; }
+
+        public virtual Artist Artist { get; set; }
     }
 }

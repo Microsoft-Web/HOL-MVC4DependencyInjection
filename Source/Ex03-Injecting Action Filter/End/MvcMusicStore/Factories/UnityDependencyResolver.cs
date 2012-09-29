@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.Practices.Unity;
-
-namespace MvcMusicStore.Factories
+﻿namespace MvcMusicStore.Factories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using Microsoft.Practices.Unity;
+
     public class UnityDependencyResolver : IDependencyResolver
     {
-        IUnityContainer container;
-        IDependencyResolver resolver;
+        private IUnityContainer container;
+
+        private IDependencyResolver resolver;
 
         public UnityDependencyResolver(IUnityContainer container, IDependencyResolver resolver)
         {

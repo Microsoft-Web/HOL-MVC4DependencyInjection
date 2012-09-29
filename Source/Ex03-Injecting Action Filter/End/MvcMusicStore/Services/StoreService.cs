@@ -1,33 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MvcMusicStore.Models;
-
-namespace MvcMusicStore.Services
+﻿namespace MvcMusicStore.Services
 {
-    public class StoreService: MvcMusicStore.Services.IStoreService
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using MvcMusicStore.Models;
+    using MvcMusicStore.Services;
+
+    public class StoreService : IStoreService
     {
-        MusicStoreEntities storeDB = new MusicStoreEntities();
+        private MusicStoreEntities storeDB = new MusicStoreEntities();
 
         public IList<string> GetGenreNames()
         {
-            var genres = from genre in storeDB.Genres
+            var genres = from genre in this.storeDB.Genres
                          select genre.Name;
 
             return genres.ToList();
         }
 
+        public IList<Genre> GetGenres()
+        {
+            return this.storeDB.Genres.ToList();
+        }
+
         public Genre GetGenreByName(string name)
         {
-            var genre = storeDB.Genres.Include("Albums").Single(g => g.Name == name);
+            var genre = this.storeDB.Genres.Include("Albums").Single(g => g.Name == name);
 
             return genre;
         }
 
         public Album GetAlbum(int id)
         {
-            var album = storeDB.Albums.Single(a => a.AlbumId == id);
+            var album = this.storeDB.Albums.Single(a => a.AlbumId == id);
 
             return album;
         }
