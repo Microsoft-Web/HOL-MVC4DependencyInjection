@@ -45,9 +45,7 @@ Now that you understand the Dependency Injection Pattern, you will learn through
 
 In this Hands-on Lab, you will learn how to:
 
-- Integrate MVC 4 with Unity Application Block for Dependency Injection
-
-- Integrate MVC 4 with MEF 2.0
+- Integrate MVC 4 with Unity for Dependency Injection using NuGet Packages
 
 - Use Dependency Injection inside an MVC Controller
 
@@ -56,7 +54,7 @@ In this Hands-on Lab, you will learn how to:
 - Use Dependency Injection inside an MVC Action Filter
 
  
->**Note:** This Lab is using Unity Application Block and MEF 2.0 as the frameworks for dependency resolution, but it is possible to adapt any Dependency Injection Framework to work with MVC 4.
+>**Note:** This Lab is using Unity.Mvc3 NuGet Package for dependency resolution, but it is possible to adapt any Dependency Injection Framework to work with MVC 4.
 
 <a name="SystemRequirements" />
 ### System Requirements ###
@@ -81,8 +79,6 @@ This Hands-On Lab is comprised by the following exercises:
 1. [Exercise 2: Injecting a View](#Exercise2)
 
 1. [Exercise 3: Injecting Filters](#Exercise3)
-
-1. [Exercise 4: Injecting a Controller using MEF 2.0](#Exercise4)
  
 Estimated time to complete this lab: **30 minutes**.
 
@@ -231,7 +227,6 @@ namespace MvcMusicStore.Controllers
 ````
 
 >**Note:** You will get an error when the class tries to create the StoreController without sending the service object, as there is no parameterless constructor declared.
-Throughout this lab you will learn how to deal with this problem using Dependency Injection with Unity and MEF.
 
 <a name="Ex1Task1" />
 #### Task 1 - Running the Application ####
@@ -869,110 +864,12 @@ In this task, you will run the application and test that the custom action filte
 
 1. Close the browser.
 
-<a name="Exercise4" />
-### Exercise 4: Injecting a Controller using MEF 2.0 ###
-
-In this exercise, you will learn how to inject dependencies in a controller but using a different container. 
-
-<a name="Ex4Task1" />
-#### Task 1 - Running the Application ####
-
-In this task, you will run the Begin application, which includes the service into the Store Controller that separates the data access from the application logic.
-
-After browsing to the store you will receive an exception, as the controller service is not passed as a parameter by default:
-
-1. Open the begin solution **MvcMusicStore.sln** at **Source\Ex04-Injecting Controller using MEF 2.0\Begin**.
-
-1.	Follow these steps to install the **NuGet** package dependencies.
-
-	1.	Open the **NuGet** **Package Manager Console**. To do this, select **Tools | Library Package Manager | Package Manager Console**.
-
-	1.	In the **Package Manager Console,** type **Install-Package NuGetPowerTools**.
-
-	1.	After installing the package, type **Enable-PackageRestore**.
-
-	1.	Build the solution. The **NuGet** dependencies will be downloaded and installed automatically.
-
-	>**Note:** One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.
-	
-	>For more information, see this article: <http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages>.
-
-1. Press **F5** to run the application.
-
-1. Browse to **/Store** to load Store Controller. You will get the error message "**No parameterless constructor defined for this object**":
-
- 	![Error while running MVC Begin Application](./images/Error_while_running_MVC_Begin_Application.png?raw=true "Error while running MVC Begin Application")
- 
-	_Error while running MVC Begin Application_
-
-1. Close the browser.
-
-In the following task you will work on the Music Store Solution to inject the required dependencies.
-
-<a name="Ex4Task2" />
-#### Task 2 - Including MEF 2.0 into MvcMusicStore Solution ####
-
-In this task, you will install MEF 2.0 in your solution.
-
-You can read more about MEF 2.0 at [codeplex](http://mef.codeplex.com/).
-
-1. In the Package Manager Console execute the following command.
-
-	````PMC
-	install-package Microsoft.Mef.MvcCompositionProvider -pre
-	````
-
-	>**Note:** After installing MEF 2.0 you will notice a new folder named **Parts** with a file inside named **Part1.cs**
-
-1. Delete the **Part1.cs** file.
-
-<a name="Ex4Task3" />
-#### Task 3 - Adding the service to the constructor ####
-
-In this task, you will add the service in the controller.
-
-1. Move **IStoreService** and **StoreService**, located in the **Services** folder, to the **Parts** folder.
-
-1. In **IStoreService** and **StoreService** files, change the namespace **MvcMusicStore.Services** to **MvcMusicStore.Parts**.
-
-	````C#
-	namespace MvcMusicStore.Parts
-	````
-
-1. In **StoreController.cs**, change **MvcMusicStore.Services** to **MvcMusicStore.Parts**.
-
-	````C#
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web;
-	using System.Web.Mvc;
-	using MvcMusicStore.ViewModels;
-	using MvcMusicStore.Models;
-	using MvcMusicStore.Parts;
-	````
-
-<a name="Ex4Task4" />
-#### Task 4 - Running the Application ####
-
-In this task, you will run the application to verify that the Store can now be loaded after including MEF.
-
-1. Press **F5** to run the application.
-
-1. Browse to **/Store**.
-
- 	![MVC Music Store](./images/MVC_Music_Store.png?raw=true "MVC Music Store")
- 
-	_MVC Music Store_
-
-1. Close the browser.
-
 ---
 
 <a name="Summary" />
 ## Summary ##
 
-By completing this Hands-On Lab you have learned how to use Dependency Injection in MVC 4 by integrating Unity using a NuGet Package and MEF 2.0. To achieve that, you have used Dependency Injection inside controllers, views and action filters.
+By completing this Hands-On Lab you have learned how to use Dependency Injection in MVC 4 by integrating Unity using a NuGet Package. To achieve that, you have used Dependency Injection inside controllers, views and action filters.
 
 The following concepts were covered:
 
