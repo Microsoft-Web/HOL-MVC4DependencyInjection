@@ -4,10 +4,9 @@
 
 ### Introduction ###
 
-Hands-On Labs are sets of step-by-step guides that are designed to help you learn ASP.NET MVC 4.  Each Lab provides instructions to guide you through the process of developing a complete application.
+These Hands-On Labs are sets of step-by-step guides that are designed to help you learn Visual Studio 2012, ASP.NET 4.5 WebForms and ASP.NET MVC 4. Each Lab provides instructions to guide you through the process of developing a Web application.
 
-In this Hands-On lab you will learn how to use MVC 4 with Dependency Injection. 
-The Dependency injection (DI) design pattern separates the component behavior from the resolution of dependencies without object intervention. This pattern is a particular implementation of Inversion of Control, where the consumer object receives the dependencies inside constructor properties or arguments.
+The Dependency Injection design pattern separates the component behavior from the resolution of dependencies without object intervention. In this Hands-On lab you will learn ASP.NET MVC 4 Dependency Injection features, Unity integration, and Dependency Injection in Controllers, Views and Action Filters.
 
 ### Repository Structure ###
 

@@ -2,20 +2,19 @@
 <Lab xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/ContentFramework.Core.Models">
   <Id>MVC4DependencyInjection</Id>
   <Author>
-    <Blog>
-    </Blog>
-    <Email>
-    </Email>
     <Name></Name>
   </Author>
-  <Description>In this Hands-On lab you will learn how to use MVC 4 with Dependency Injection. The Dependency injection design pattern separates the component behavior from the resolution of dependencies without object intervention. In this Hands-On lab you will learn MVC 4 Dependency Injection features, Unity integration, and Dependency Injection in Controllers, Views and Action Filters.</Description>  
+  <Description>The Dependency Injection design pattern separates the component behavior from the resolution of dependencies without object intervention. In this Hands-On lab you will learn ASP.NET MVC 4 Dependency Injection features, Unity integration, and Dependency Injection in Controllers, Views and Action Filters.</Description>  
   <Document ConversionType="Html">.\HOL.md</Document>
   <Title>ASP.NET MVC 4 Dependency Injection</Title>
-  <Version>2.0.0</Version>
+  <Version>2.1.0</Version>
   <Source>.\Source</Source>
   <Technologies>
     <Technology>Visual Studio</Technology>
     <Technology>.NET Framework</Technology>
     <Technology>ASP.NET MVC</Technology>
   </Technologies>
+  <CustomProperties>
+    <Property Name="GitHubRepository" Value="https://github.com/Microsoft-Web/HOL-MVC4DependencyInjection" />
+  </CustomProperties>
 </Lab>

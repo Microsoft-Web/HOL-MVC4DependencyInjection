@@ -1,6 +1,6 @@
 ﻿<a name="HOLTop" />
-#ASP.NET MVC 4 Dependency Injection#
 
+# ASP.NET MVC 4 Dependency Injection #
 ---
 
 <a name="Overview" />
@@ -56,16 +56,21 @@ In this Hands-on Lab, you will learn how to:
  
 >**Note:** This Lab is using Unity.Mvc3 NuGet Package for dependency resolution, but it is possible to adapt any Dependency Injection Framework to work with MVC 4.
 
-<a name="SystemRequirements" />
-### System Requirements ###
+<a name="Prerequisites" />
+### Prerequisites ###
 
 You must have the following items to complete this lab:
 
 - [Microsoft Visual Studio Express 2012 for Web](http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-for-web) or superior (read [Appendix A](#AppendixA) for instructions on how to install it).
 
-### Installing Code Snippets ###
+<a name="Setup" /> 
+### Setup ###
 
-For convenience, much of the code you will be managing along this lab is available as Visual Studio code snippets. To install the code snippets run **.\Source\Setup\CodeSnippets.vsi** file.
+**Installing Code Snippets**
+
+For convenience, much of the code you will be managing along this lab is available as Visual Studio code snippets. To install the code snippets run **.\Source\Assets\CodeSnippets.vsi** file.
+
+If you are not familiar with the Visual Studio Code Snippets, and want to learn how to use them, you can refer to the appendix from this document "[Appendix C: Using Code Snippets](#AppendixC)".
 
 ---
 
@@ -80,9 +85,9 @@ This Hands-On Lab is comprised by the following exercises:
 
 1. [Exercise 3: Injecting Filters](#Exercise3)
  
-Estimated time to complete this lab: **30 minutes**.
-
 > **Note:** Each exercise is accompanied by an **End** folder containing the resulting solution you should obtain after completing the exercises. You can use this solution as a guide if you need additional help working through the exercises.
+
+Estimated time to complete this lab: **30 minutes**.
 
 <a name="Exercise1" />
 ### Exercise 1: Injecting a Controller ###
@@ -239,9 +244,9 @@ When running the application, you will receive an exception, as the controller s
 
 1.	Follow these steps to install the **NuGet** package dependencies.
 
-	1. Click **Project** and select **Manage NuGet Packages**.
+	1. click the **Project** menu and select **Manage NuGet Packages**.
 
-	1. In the **Manage NuGet Packages** page, click **Restore** in order to download missing packages.
+	1. In the **Manage NuGet Packages** dialog, click **Restore** in order to download missing packages.
 
 	1. Finally, build the solution by clicking **Build** | **Build Solution**.
 
@@ -377,8 +382,8 @@ Then, you will integrate the project with Unity and create a custom dependency r
 In this task, you will create a view that performs a service call to generate a new dependency. The service consists in a simple messaging service included in this solution.
 
 1. Open the **Begin** solution located in the **Source\Ex02-Injecting View\Begin** folder. Otherwise, you might continue using the **End** solution obtained by completing the previous exercise.
-	1. If you opened the provided **Begin** solution, you will need to download some missing NuGet packages before continue. To do this, click **Project** and select **Manage NuGet Packages**.
-	1. In the **Manage NuGet Packages** page, click **Restore** in order to download missing packages.
+	1. If you opened the provided **Begin** solution, you will need to download some missing NuGet packages before continue. To do this, click the **Project** menu and select **Manage NuGet Packages**.
+	1. In the **Manage NuGet Packages** dialog, click **Restore** in order to download missing packages.
 	1. Finally, build the solution by clicking **Build** | **Build Solution**.
 
 	>**Note:** One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.
@@ -673,9 +678,9 @@ In the previous Hands-On lab **Custom Action Filters** you have worked with filt
 In this task, you will include in the Music Store a custom action filter to trace events. As custom action filter concepts are already treated in the previous Lab "Custom Action Filters", you will just include the filter class from the Assets folder of this lab, and then create a Filter Provider for Unity:
 
 1. Open the **Begin** solution located in the **Source\Ex03 - Injecting Filters\Begin** folder. Otherwise, you might continue using the **End** solution obtained by completing the previous exercise.
-	1. If you opened the provided **Begin** solution, you will need to download some missing NuGet packages before continue. To do this, click **Project** and select **Manage NuGet Packages**. 
+	1. If you opened the provided **Begin** solution, you will need to download some missing NuGet packages before continue. To do this, click the **Project** menu and select **Manage NuGet Packages**. 
 
-	1. In the **Manage NuGet Packages** page, click **Restore** in order to download missing packages. 
+	1. In the **Manage NuGet Packages** dialog, click **Restore** in order to download missing packages. 
 
 	1. Finally, build the solution by clicking **Build** | **Build Solution**. 
 
@@ -863,6 +868,8 @@ In this task, you will run the application and test that the custom action filte
 	_Application Trace - Request Details_
 
 1. Close the browser.
+
+>**Note:** Additionally, you can deploy this application to Windows Azure Web Sites following [Appendix B: Publishing an ASP.NET MVC 4 Application using Web Deploy](#AppendixB).
 
 ---
 
@@ -1116,3 +1123,4 @@ _Right-click where you want to insert the code snippet and select Insert Snippet
  ![Pick the relevant snippet from the list, by clicking on it](./images/Pick-the-relevant-snippet-from-the-list,-by-clicking-on-it.png?raw=true "Pick the relevant snippet from the list, by clicking on it")
  
 _Pick the relevant snippet from the list, by clicking on it_
+
