@@ -607,6 +607,19 @@ To inject **Browse** View, you will now register the custom dependency resolver 
 	}
 	````
 
+1. Add a reference to **MvcMusicStore.Factories** namespace.
+
+	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex02 - Factories Namespace_)
+	<!-- mark: 6 -->
+	````C#
+	using System.Web.Mvc; 
+	using Microsoft.Practices.Unity; 
+	using Unity.Mvc3; 
+	using MvcMusicStore.Services; 
+	using MvcMusicStore.Controllers; 
+	using MvcMusicStore.Factories; 
+	````
+
 1. Register **CustomViewPageActivator** as a View Page activator into the Unity container:
 
 	(Code Snippet - _ASP.NET Dependency Injection Lab - Ex02 - Register CustomViewPageActivator_)
@@ -677,7 +690,7 @@ In the previous Hands-On lab **Custom Action Filters** you have worked with filt
 
 In this task, you will include in the Music Store a custom action filter to trace events. As custom action filter concepts are already treated in the previous Lab "Custom Action Filters", you will just include the filter class from the Assets folder of this lab, and then create a Filter Provider for Unity:
 
-1. Open the **Begin** solution located in the **Source\Ex03 - Injecting Filters\Begin** folder. Otherwise, you might continue using the **End** solution obtained by completing the previous exercise.
+1. Open the **Begin** solution located in the **Source\Ex03 - Injecting Action Filter\Begin** folder. Otherwise, you might continue using the **End** solution obtained by completing the previous exercise.
 	1. If you opened the provided **Begin** solution, you will need to download some missing NuGet packages before continue. To do this, click the **Project** menu and select **Manage NuGet Packages**. 
 
 	1. In the **Manage NuGet Packages** dialog, click **Restore** in order to download missing packages. 
