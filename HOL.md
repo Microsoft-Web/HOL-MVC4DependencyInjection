@@ -24,7 +24,7 @@ The Dependency Injection pattern is a particular implementation of Inversion of 
 
 At a high level, the goal of Dependency Injection is that a client class (e.g. _the golfer_) needs something that satisfies an interface (e.g. _IClub_). It doesn't care what the concrete type is  (e.g. _WoodClub, IronClub, WedgeClub_ or _PutterClub_), it wants someone else to handle that (e.g. a good _caddy_). The Dependency Resolver in ASP.NET MVC can allow you to register your dependency logic somewhere else (e.g. a container or a _bag of clubs_).
 
-![Dependency Injection diagram](./images/Dependency-Injection-golf.png?raw=true "Dependency Injection illustration")
+![Dependency Injection diagram](./images/dependency-injection-golf.png?raw=true "Dependency Injection illustration")
  
 _Dependency Injection - Golf analogy_
 
