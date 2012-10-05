@@ -41,20 +41,20 @@ The advantages of using Dependency Injection pattern and Inversion of Control ar
  
 >**Note:** Dependency Injection is sometimes compared with Abstract Factory Design Pattern, but there is a slight difference between both approaches. DI has a Framework working behind to solve dependencies by calling the factories and the registered services.
 
-Now that you understand the Dependency Injection Pattern, you will learn throughout this lab how to apply it in ASP.NET MVC 4. You will start using Dependency Injection in the **Controllers** to include a database access service. Next, you will apply Dependency Injection to the **Views** to consume a service and show information. Finally, you will extend the DI to MVC 4 Filters, injecting a custom action filter in the solution.
+Now that you understand the Dependency Injection Pattern, you will learn throughout this lab how to apply it in ASP.NET MVC 4. You will start using Dependency Injection in the **Controllers** to include a database access service. Next, you will apply Dependency Injection to the **Views** to consume a service and show information. Finally, you will extend the DI to ASP.NET MVC 4 Filters, injecting a custom action filter in the solution.
 
 In this Hands-on Lab, you will learn how to:
 
-- Integrate MVC 4 with Unity for Dependency Injection using NuGet Packages
+- Integrate ASP.NET MVC 4 with Unity for Dependency Injection using NuGet Packages
 
-- Use Dependency Injection inside an MVC Controller
+- Use Dependency Injection inside an ASP.NET MVC Controller
 
-- Use Dependency Injection inside an MVC View
+- Use Dependency Injection inside an ASP.NET MVC View
 
-- Use Dependency Injection inside an MVC Action Filter
+- Use Dependency Injection inside an ASP.NET MVC Action Filter
 
  
->**Note:** This Lab is using Unity.Mvc3 NuGet Package for dependency resolution, but it is possible to adapt any Dependency Injection Framework to work with MVC 4.
+>**Note:** This Lab is using Unity.Mvc3 NuGet Package for dependency resolution, but it is possible to adapt any Dependency Injection Framework to work with ASP.NET MVC 4.
 
 <a name="Prerequisites" />
 ### Prerequisites ###
@@ -92,9 +92,9 @@ Estimated time to complete this lab: **30 minutes**.
 <a name="Exercise1" />
 ### Exercise 1: Injecting a Controller ###
 
-In this exercise, you will learn how to use Dependency Injection in MVC Controllers by integrating Unity using a NuGet Package. For that reason, you will include services into your MVC Music Store controllers to separate the logic from the data access. The services will create a new dependence in the controller constructor, which will be resolved using Dependency Injection with the help of **Unity**.
+In this exercise, you will learn how to use Dependency Injection in ASP.NET MVC Controllers by integrating Unity using a NuGet Package. For that reason, you will include services into your MVC Music Store controllers to separate the logic from the data access. The services will create a new dependence in the controller constructor, which will be resolved using Dependency Injection with the help of **Unity**.
 
-This approach will show you how to generate less coupled applications, which are more flexible and easier to maintain and test. You will also learn how to integrate MVC with Unity.
+This approach will show you how to generate less coupled applications, which are more flexible and easier to maintain and test. You will also learn how to integrate ASP.NET MVC with Unity.
 
 #### About StoreManager Service ####
 
@@ -162,7 +162,7 @@ You will find below that the **StoreController** implementation has a dependency
 
 > **Note:** The dependency introduced in this exercise is related to **Inversion of Control** (IoC).
 >
-> The **StoreController** class constructor receives an **IStoreService** type parameter, which is essential to perform service calls from inside the class. However, **StoreController** does not implement the default constructor (with no parameters) that any controller must have to work with MVC.
+> The **StoreController** class constructor receives an **IStoreService** type parameter, which is essential to perform service calls from inside the class. However, **StoreController** does not implement the default constructor (with no parameters) that any controller must have to work with ASP.NET MVC.
 >
 > To resolve the dependency, the controller has to be created by an abstract factory (a class that returns any object of the specified type).
 
@@ -256,9 +256,9 @@ When running the application, you will receive an exception, as the controller s
 
 1. Press **Ctrl + F5** to run the application without debugging. You will get the error message "**No parameterless constructor defined for this object**":
 
- 	![Error while running MVC Begin Application](./images/Error_while_running_MVC_Begin_Application.png?raw=true "Error while running MVC Begin Application")
+ 	![Error while running ASP.NET MVC Begin Application](./images/Error_while_running_MVC_Begin_Application.png?raw=true "Error while running ASP.NET MVC Begin Application")
  
-	_Error while running MVC Begin Application_
+	_Error while running ASP.NET MVC Begin Application_
 
 1. Close the browser.
 
@@ -367,12 +367,12 @@ In this task, you will run the application to verify that it can now be loaded a
 
 1. Close the browser.
 
-In the following exercises you will learn how to extend the Dependency Injection scope to use it inside MVC Views and Action Filters.
+In the following exercises you will learn how to extend the Dependency Injection scope to use it inside ASP.NET MVC Views and Action Filters.
 
 <a name="Exercise2" />
 ###Exercise 2: Injecting a View ###
 
-In this exercise, you will learn how to use Dependency Injection in a view with the new features of MVC 4 for Unity integration. In order to do that, you will call a custom service inside the Store Browse View, which will show a message and an image below.
+In this exercise, you will learn how to use Dependency Injection in a view with the new features of ASP.NET MVC 4 for Unity integration. In order to do that, you will call a custom service inside the Store Browse View, which will show a message and an image below.
 
 Then, you will integrate the project with Unity and create a custom dependency resolver to inject the dependencies.
 
@@ -454,9 +454,9 @@ In this task, you will create a view that performs a service call to generate a 
 <a name="Ex2Task2" />
 #### Task 2 - Including a Custom Dependency Resolver and a Custom View Page Activator ####
 
-In the previous task, you injected a new dependency inside a view to perform a service call inside it. Now, you will resolve that dependency by implementing the MVC Dependency Injection interfaces **IViewPageActivator** and **IDependencyResolver**. You will include in the solution an implementation of **IDependencyResolver** that will deal with the service retrieval by using Unity. Then, you will include another custom implementation of **IViewPageActivator** interface that will solve the creation of the views.
+In the previous task, you injected a new dependency inside a view to perform a service call inside it. Now, you will resolve that dependency by implementing the ASP.NET MVC Dependency Injection interfaces **IViewPageActivator** and **IDependencyResolver**. You will include in the solution an implementation of **IDependencyResolver** that will deal with the service retrieval by using Unity. Then, you will include another custom implementation of **IViewPageActivator** interface that will solve the creation of the views.
 
-> **Note:** Since MVC 3, the implementation for Dependency Injection had simplified the interfaces to register services. **IDependencyResolver** and **IViewPageActivator** are part of MVC 3 features for Dependency Injection.
+> **Note:** Since ASP.NET MVC 3, the implementation for Dependency Injection had simplified the interfaces to register services. **IDependencyResolver** and **IViewPageActivator** are part of ASP.NET MVC 3 features for Dependency Injection.
 >
 >**- IDependencyResolver** interface replaces the previous IMvcServiceLocator. Implementers of IDependencyResolver must return an instance of the service or a service collection.
 >
@@ -731,7 +731,7 @@ In this task, you will include in the Music Store a custom action filter to trac
 	}
 	````
 
-	>**Note:** This custom action filter performs ASP.NET tracing. You can check "MVC 4 local and Dynamic Action Filters" Lab for more reference.
+	>**Note:** This custom action filter performs ASP.NET tracing. You can check "ASP.NET MVC 4 local and Dynamic Action Filters" Lab for more reference.
 
 1. Add the empty class **FilterProvider.cs** to the project in the folder **/Filters.**
 
@@ -889,11 +889,11 @@ In this task, you will run the application and test that the custom action filte
 <a name="Summary" />
 ## Summary ##
 
-By completing this Hands-On Lab you have learned how to use Dependency Injection in MVC 4 by integrating Unity using a NuGet Package. To achieve that, you have used Dependency Injection inside controllers, views and action filters.
+By completing this Hands-On Lab you have learned how to use Dependency Injection in ASP.NET MVC 4 by integrating Unity using a NuGet Package. To achieve that, you have used Dependency Injection inside controllers, views and action filters.
 
 The following concepts were covered:
 
-- MVC 4 Dependency Injection features
+- ASP.NET MVC 4 Dependency Injection features
 
 - Unity integration using Unity.Mvc3 NuGet Package
 
