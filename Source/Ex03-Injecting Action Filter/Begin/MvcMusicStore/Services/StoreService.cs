@@ -19,9 +19,9 @@
             return genres.ToList();
         }
 
-        public IList<Genre> GetGenres()
-        {
-            return this.storeDB.Genres.ToList();
+        public IList<Genre> GetGenres(int max)
+        {           
+            return max > 0 ? this.storeDB.Genres.Take(max).ToList() : this.storeDB.Genres.ToList();
         }
 
         public Genre GetGenreByName(string name)

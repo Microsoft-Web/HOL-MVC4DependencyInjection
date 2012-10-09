@@ -10,7 +10,7 @@
     {
         IList<string> GetGenreNames();
 
-        IList<Genre> GetGenres();
+        IList<Genre> GetGenres(int max = 0);
 
         Genre GetGenreByName(string name);
 

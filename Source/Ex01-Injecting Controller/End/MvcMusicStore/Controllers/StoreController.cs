@@ -45,7 +45,7 @@
         // GET: /Store/GenreMenu
         public ActionResult GenreMenu()
         {
-            var genres = this.service.GetGenres();
+            var genres = this.service.GetGenres(9);
 
             return this.PartialView(genres);
         }
