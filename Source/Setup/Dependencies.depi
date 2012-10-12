@@ -4,12 +4,12 @@
 
   <dependencies>
 		
-	<dependency hint="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\DevDiv\Web Tools\Servicing\1~.0\VWDExpress11.Version,HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\DevDiv\Web Tools\Servicing\1~.0\VWDExpress11.Version,HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\DevDiv\Web Tools\Servicing\1~.0\VisualStudio11.Version,HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\DevDiv\Web Tools\Servicing\1~.0\VisualStudio11.Version;^1\.[0-9]\.([3-9][0-9]\d*).[0-9]$"
-		name="Visual Studio Web Development Feature Or Visual Studio Express 2012 for Web"
-		description="Microsoft Visual Studio Ultimate 2012, Microsoft Visual Studio Premium 2012, Microsoft Visual Studio Professional 2012 or Microsoft Visual Studio Express 2012 for Web"
-		helpLink="http://www.microsoft.com/visualstudio/"
-		disableSkip="false"
-		type="Registry" />
+	<dependency hint="HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\DevDiv\wdexpress\Servicing\11~.0\coremsi.Version,HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\DevDiv\vs\Servicing\11~.0\devenv.Version;^11\.[0-9]\.([3-9][0-9]\d*).[0-9]$"
+            name="Visual Studio Express 2012 for Desktop Or Visual Studio 2012"
+            description="Microsoft Visual Studio Ultimate 2012, Microsoft Visual Studio Premium 2012, Microsoft Visual Studio Professional 2012 or Microsoft Visual Studio Express 2012 for Desktop"
+            helpLink="http://www.microsoft.com/visualstudio/"
+            disableSkip="false"
+            type="Registry" />
 
   </dependencies>
 </DependencyCheckerConfiguration>
