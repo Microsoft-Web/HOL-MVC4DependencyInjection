@@ -242,17 +242,13 @@ When running the application, you will receive an exception, as the controller s
 
 1. Open the **Begin** solution located in **Source\Ex01-Injecting Controller\Begin**.
 
-1.	Follow these steps to install the **NuGet** package dependencies.
-
-	1. click the **Project** menu and select **Manage NuGet Packages**.
+	1. You will need to download some missing NuGet packages before continue. To do this, click the **Project** menu and select **Manage NuGet Packages**.
 
 	1. In the **Manage NuGet Packages** dialog, click **Restore** in order to download missing packages.
 
 	1. Finally, build the solution by clicking **Build** | **Build Solution**.
 
 	>**Note:** One of the advantages of using NuGet is that you don't have to ship all the libraries in your project, reducing the project size. With NuGet Power Tools, by specifying the package versions in the Packages.config file, you will be able to download all the required libraries the first time you run the project. This is why you will have to run these steps after you open an existing solution from this lab.
-	
-	>For more information, see this article: <http://docs.nuget.org/docs/workflows/using-nuget-without-committing-packages>.
 
 1. Press **Ctrl + F5** to run the application without debugging. You will get the error message "**No parameterless constructor defined for this object**":
 
