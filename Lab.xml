@@ -9,6 +9,7 @@
   <Title>ASP.NET MVC 4 Dependency Injection</Title>
   <Version>2.1.0</Version>
   <Source>.\Source</Source>
+  <DependencyChecker>.\Source\Setup\Dependencies.depi</DependencyChecker>
   <Technologies>
     <Technology>Visual Studio</Technology>
     <Technology>.NET Framework</Technology>
